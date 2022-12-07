@@ -99,7 +99,6 @@ func (h *handler) GetProductList(c *gin.Context) {
 
 	offsetStr := c.DefaultQuery("offset", h.cfg.Default_Offset)
 	limitStr := c.DefaultQuery("limit", h.cfg.Default_Limit)
-
 	searchStr := c.DefaultQuery("search", "")
 
 	offset, err := strconv.Atoi(offsetStr)
@@ -136,6 +135,8 @@ func (h *handler) GetProductList(c *gin.Context) {
 		Message: "GetList OK",
 	})
 }
+
+// Authorithation ???!!!
 
 // SearchProductByMyUsername godoc
 //
@@ -214,18 +215,19 @@ func (h *handler) SearchProductByMyUsername(c *gin.Context) {
 //	@Failure		400				{object}	models.JSONErrorResponse
 //	@Router			/v1/product/ [put]
 func (h *handler) ProductUpdate(c *gin.Context) {
+
 	var body models.UpdateProductModul
+
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, models.JSONErrorResponse{Error: err.Error()})
 		return
 	}
 
 	product, err := h.grpcClient.Product.UpdateProduct(c.Request.Context(), &eCommerce.UpdateProductRequest{
-		Content: &eCommerce.Content{
-			Title: body.Title,
-			Body:  body.Body,
-		},
-		Id: body.ID,
+		Id:          body.ID,
+		ProductName: body.Product_name,
+		Description: body.Description,
+		Price:       body.Price,
 	})
 
 	if err != nil {
@@ -234,8 +236,6 @@ func (h *handler) ProductUpdate(c *gin.Context) {
 		})
 		return
 	}
-
-	// get product by id service ichida tekshirib ketilgan
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Product Update",
@@ -258,8 +258,6 @@ func (h *handler) ProductUpdate(c *gin.Context) {
 //	@Router			/v1/product/{id} [delete]
 func (h *handler) DeleteProduct(c *gin.Context) {
 	idStr := c.Param("id")
-
-	// get product by id service ichida tekshirib ketilgan
 
 	product, err := h.grpcClient.Product.DeleteProduct(c.Request.Context(), &eCommerce.DeleteProductRequest{
 		Id: idStr,
