@@ -2,40 +2,30 @@ package models
 
 import "time"
 
-// Content ...
-type Content struct {
-	Title string `json:"title" binding:"required" `
-	Body  string `json:"body" binding:"required"`
+// Product ...
+type Product struct {
+	ID           string     `json:"id"`
+	Category_id  string     `json:"category_id" binding:"required"`
+	Product_name string     `json:"product_name" binding:"required"`
+	Description  string     `json:"description" binding:"required"`
+	Price        string     `json:"price" binding:"required"`
+	Created_at   time.Time  `json:"created_at"`
+	Updated_at   *time.Time `json:"updated_at"`
 }
 
-// Article ...
-type Article struct {
-	ID        string     `json:"id"`
-	Content              // Promoted fields
-	AuthorID  string     `json:"author_id" binding:"required"`
-	CreatedAt time.Time  `json:"created_at"`
-	UpdatedAt *time.Time `json:"updated_at"`
-	DeletedAt *time.Time `json:"deleted_at"`
+// CreateProductModul ...
+type CreateProductModul struct {
+	Category_id  string `json:"category_id" binding:"required"`
+	Product_name string `json:"product_name" binding:"required"`
+	Description  string `json:"description" binding:"required"`
+	Price        string `json:"price" binding:"required"`
 }
 
-// CreateArticleModul ...
-type CreateArticleModul struct {
-	Content         // Promoted fields
-	AuthorID string `json:"author_id" binding:"required"`
-}
-
-// PackedArticleModel ...
-type PackedArticleModel struct {
-	ID        string     `json:"id" binding:"required"`
-	Content              // Promoted fields
-	Author    Author     `json:"author_id" binding:"required"`
-	CreatedAt time.Time  `json:"created_at"`
-	UpdatedAt *time.Time `json:"updated_at"`
-	DeletedAt *time.Time `json:"deleted_at"`
-}
-
-// UpdateArticleModul ...
-type UpdateArticleModul struct {
-	ID      string `json:"id" binding:"required"`
-	Content        // Promoted fields
+// UpdateProductModul ...
+type UpdateProductModul struct {
+	ID           string `json:"id"`
+	Category_id  string `json:"category_id" binding:"required"`
+	Product_name string `json:"product_name" binding:"required"`
+	Description  string `json:"description" binding:"required"`
+	Price        string `json:"price" binding:"required"`
 }

@@ -2,40 +2,39 @@ package handlars
 
 import (
 	"mymachine707/models"
-	"mymachine707/protogen/blogpost"
+	"mymachine707/protogen/eCommerce"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
-// CreatArticle godoc
+// CreatProduct godoc
 //
-//	@Summary		Creat Article
-//	@Description	Creat a new article
-//	@Tags			article
+//	@Summary		Creat Product
+//	@Description	Creat a new product
+//	@Tags			product
 //	@Accept			json
 //	@Produce		json
-//	@Param			article			body		models.CreateArticleModul	true	"Article body"
+//	@Param			product			body		models.CreateProductModul	true	"Product body"
 //	@Param			Authorization	header		string						false	"Authorization"
-//	@Success		201				{object}	models.JSONResult{data=models.Article}
+//	@Success		201				{object}	models.JSONResult{data=models.Product}
 //	@Failure		400				{object}	models.JSONErrorResponse
-//	@Router			/v2/article [post]
-func (h *handler) CreatArticle(c *gin.Context) {
+//	@Router			/v1/product [post]
+func (h *handler) CreatProduct(c *gin.Context) {
 
-	var body models.CreateArticleModul
+	var body models.CreateProductModul
 
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, models.JSONErrorResponse{Error: err.Error()})
 		return
 	}
 
-	article, err := h.grpcClient.Article.CreateArticle(c.Request.Context(), &blogpost.CreateArticleRequest{
-		Content: &blogpost.Content{
-			Title: body.Title,
-			Body:  body.Body,
-		},
-		AuthorId: body.AuthorID,
+	product, err := h.grpcClient.Product.CreateProduct(c.Request.Context(), &eCommerce.CreateProductRequest{
+		CategoryId:  body.Category_id,
+		ProductName: body.Product_name,
+		Description: body.Description,
+		Price:       body.Price,
 	})
 
 	if err != nil {
@@ -46,27 +45,27 @@ func (h *handler) CreatArticle(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, models.JSONResult{
-		Message: "CreatArticle",
-		Data:    article,
+		Message: "Product Created",
+		Data:    product,
 	})
 }
 
-// GetArticleByID godoc
+// GetProductByID godoc
 //
-//	@Summary		GetArticleByID
-//	@Description	get an article by id
-//	@Tags			article
+//	@Summary		GetProductByID
+//	@Description	get an product by id
+//	@Tags			product
 //	@Accept			json
 //	@Produce		json
-//	@Param			id				path		string	true	"Article id"
+//	@Param			id				path		string	true	"Product id"
 //	@Param			Authorization	header		string	false	"Authorization"
-//	@Success		201				{object}	models.JSONResult{data=models.PackedArticleModel}
+//	@Success		201				{object}	models.JSONResult{data=models.PackedProductModel}
 //	@Failure		400				{object}	models.JSONErrorResponse
-//	@Router			/v2/article/{id} [get]
-func (h *handler) GetArticleByID(c *gin.Context) {
+//	@Router			/v1/product/{id} [get]
+func (h *handler) GetProductByID(c *gin.Context) {
 	idStr := c.Param("id")
 
-	article, err := h.grpcClient.Article.GetArticleById(c.Request.Context(), &blogpost.GetArticleByIDRequest{
+	product, err := h.grpcClient.Product.GetProductById(c.Request.Context(), &eCommerce.GetProductByIDRequest{
 		Id: idStr,
 	})
 
@@ -78,28 +77,28 @@ func (h *handler) GetArticleByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, models.JSONResult{
-		Message: "GetArticleByID",
-		Data:    article,
+		Message: "GetProductByID",
+		Data:    product,
 	})
 }
 
-// GetArticleList godoc
+// GetProductList godoc
 //
-//	@Summary		List articles
-//	@Description	GetArticleList
-//	@Tags			article
+//	@Summary		List products
+//	@Description	GetProductList
+//	@Tags			product
 //	@Accept			json
 //	@Produce		json
 //	@Param			offset			query		int		false	"0"			default()
 //	@Param			limit			query		int		false	"100"		default()
 //	@Param			search			query		string	false	"search"	default()
 //	@Param			Authorization	header		string	false	"Authorization"
-//	@Success		200				{object}	models.JSONResult{data=[]models.Article}
-//	@Router			/v2/article/ [get]
-func (h *handler) GetArticleList(c *gin.Context) {
+//	@Success		200				{object}	models.JSONResult{data=[]models.Product}
+//	@Router			/v1/product/ [get]
+func (h *handler) GetProductList(c *gin.Context) {
 
-	offsetStr := c.DefaultQuery("offset", "0")
-	limitStr := c.DefaultQuery("limit", "100")
+	offsetStr := c.DefaultQuery("offset", h.cfg.Default_Offset)
+	limitStr := c.DefaultQuery("limit", h.cfg.Default_Limit)
 
 	searchStr := c.DefaultQuery("search", "")
 
@@ -119,7 +118,7 @@ func (h *handler) GetArticleList(c *gin.Context) {
 		return
 	}
 
-	articleList, err := h.grpcClient.Article.GetArticleList(c.Request.Context(), &blogpost.GetArticleListRequest{
+	productList, err := h.grpcClient.Product.GetProductList(c.Request.Context(), &eCommerce.GetProductListRequest{
 		Offset: int32(offset),
 		Limit:  int32(limit),
 		Search: searchStr,
@@ -133,25 +132,25 @@ func (h *handler) GetArticleList(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, models.JSONResult{
-		Data:    articleList,
+		Data:    productList,
 		Message: "GetList OK",
 	})
 }
 
-// SearchArticleByMyUsername godoc
+// SearchProductByMyUsername godoc
 //
-//	@Summary		List articles
-//	@Description	SearchArticleByMyUsername
-//	@Tags			article
+//	@Summary		List products
+//	@Description	SearchProductByMyUsername
+//	@Tags			product
 //	@Accept			json
 //	@Produce		json
 //	@Param			offset			query		int		false	"0"		default()
 //	@Param			limit			query		int		false	"100"	default()
 //	@Param			search			query		string	false	"s"		default()
 //	@Param			Authorization	header		string	false	"Authorization"
-//	@Success		200				{object}	models.JSONResult{data=[]models.Article}
-//	@Router			/v2/my-articles/ [get]
-func (h *handler) SearchArticleByMyUsername(c *gin.Context) {
+//	@Success		200				{object}	models.JSONResult{data=[]models.Product}
+//	@Router			/v1/my-products/ [get]
+func (h *handler) SearchProductByMyUsername(c *gin.Context) {
 
 	offsetStr := c.DefaultQuery("offset", "0")
 	limitStr := c.DefaultQuery("limit", "100")
@@ -183,7 +182,7 @@ func (h *handler) SearchArticleByMyUsername(c *gin.Context) {
 		return
 	}
 
-	articleList, err := h.grpcClient.Article.GetArticleList(c.Request.Context(), &blogpost.GetArticleListRequest{
+	productList, err := h.grpcClient.Product.GetProductList(c.Request.Context(), &eCommerce.GetProductListRequest{
 		Offset: int32(offset),
 		Limit:  int32(limit),
 		Search: searchStr,
@@ -197,32 +196,32 @@ func (h *handler) SearchArticleByMyUsername(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, models.JSONResult{
-		Data:    articleList,
+		Data:    productList,
 		Message: "GetList OK",
 	})
 }
 
-// ArticleUpdate godoc
+// ProductUpdate godoc
 //
-//	@Summary		Update Article
-//	@Description	Update Article
-//	@Tags			article
+//	@Summary		Update Product
+//	@Description	Update Product
+//	@Tags			product
 //	@Accept			json
 //	@Produce		json
-//	@Param			article			body		models.UpdateArticleModul	true	"Article body"
+//	@Param			product			body		models.UpdateProductModul	true	"Product body"
 //	@Param			Authorization	header		string						false	"Authorization"
-//	@Success		200				{object}	models.JSONResult{data=[]models.Article}
+//	@Success		200				{object}	models.JSONResult{data=[]models.Product}
 //	@Failure		400				{object}	models.JSONErrorResponse
-//	@Router			/v2/article/ [put]
-func (h *handler) ArticleUpdate(c *gin.Context) {
-	var body models.UpdateArticleModul
+//	@Router			/v1/product/ [put]
+func (h *handler) ProductUpdate(c *gin.Context) {
+	var body models.UpdateProductModul
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, models.JSONErrorResponse{Error: err.Error()})
 		return
 	}
 
-	article, err := h.grpcClient.Article.UpdateArticle(c.Request.Context(), &blogpost.UpdateArticleRequest{
-		Content: &blogpost.Content{
+	product, err := h.grpcClient.Product.UpdateProduct(c.Request.Context(), &eCommerce.UpdateProductRequest{
+		Content: &eCommerce.Content{
 			Title: body.Title,
 			Body:  body.Body,
 		},
@@ -236,33 +235,33 @@ func (h *handler) ArticleUpdate(c *gin.Context) {
 		return
 	}
 
-	// get article by id service ichida tekshirib ketilgan
+	// get product by id service ichida tekshirib ketilgan
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Article Update",
-		"data":    article,
+		"message": "Product Update",
+		"data":    product,
 	})
 
 }
 
-// DeleteArticle godoc
+// DeleteProduct godoc
 //
-//	@Summary		Delete Article
-//	@Description	get element by id and delete this article
-//	@Tags			article
+//	@Summary		Delete Product
+//	@Description	get element by id and delete this product
+//	@Tags			product
 //	@Accept			json
 //	@Produce		json
-//	@Param			id				path		string	true	"Article id"
+//	@Param			id				path		string	true	"Product id"
 //	@Param			Authorization	header		string	false	"Authorization"
-//	@Success		201				{object}	models.JSONResult{data=models.Article}
+//	@Success		201				{object}	models.JSONResult{data=models.Product}
 //	@Failure		400				{object}	models.JSONErrorResponse
-//	@Router			/v2/article/{id} [delete]
-func (h *handler) DeleteArticle(c *gin.Context) {
+//	@Router			/v1/product/{id} [delete]
+func (h *handler) DeleteProduct(c *gin.Context) {
 	idStr := c.Param("id")
 
-	// get article by id service ichida tekshirib ketilgan
+	// get product by id service ichida tekshirib ketilgan
 
-	article, err := h.grpcClient.Article.DeleteArticle(c.Request.Context(), &blogpost.DeleteArticleRequest{
+	product, err := h.grpcClient.Product.DeleteProduct(c.Request.Context(), &eCommerce.DeleteProductRequest{
 		Id: idStr,
 	})
 
@@ -274,7 +273,7 @@ func (h *handler) DeleteArticle(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Article Deleted",
-		"data":    article,
+		"message": "Product Deleted",
+		"data":    product,
 	})
 }

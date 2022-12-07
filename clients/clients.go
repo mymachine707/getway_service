@@ -2,51 +2,38 @@ package clients
 
 import (
 	"mymachine707/config"
-	"mymachine707/protogen/blogpost"
+	"mymachine707/protogen/eCommerce"
 
 	"google.golang.org/grpc"
 )
 
 type GrpcClients struct {
-	Author  blogpost.AuthorServiceClient
-	Article blogpost.ArticleServiceClient
-	Users   blogpost.UserServiceClient
+	Category eCommerce.CategoryServiceClient
+	Product  eCommerce.ProductServiceClient
 
 	conns []*grpc.ClientConn
 }
 
 func NewGrpcClients(cfg config.Config) (*GrpcClients, error) {
-	connAuthor, err := grpc.Dial(cfg.AuthorServiceGrpcHost+cfg.AuthorServiceGrpcPort, grpc.WithInsecure())
-
+	connCategory, err := grpc.Dial(cfg.CategoryServiceGrpcHost+cfg.CategoryServiceGrpcPort, grpc.WithInsecure())
 	if err != nil {
 		return nil, err
 	}
 
-	// defer conn.Close() // ulanishdan keyin yoppormasligi uchun hozircha defer keremas
-	author := blogpost.NewAuthorServiceClient(connAuthor)
+	category := eCommerce.NewCategoryServiceClient(connCategory)
 
-	connArticle, err := grpc.Dial(cfg.ArticleServiceGrpcHost+cfg.ArticleServiceGrpcPort, grpc.WithInsecure())
-
+	connProduct, err := grpc.Dial(cfg.ProductServiceGrpcHost+cfg.ProductServiceGrpcPort, grpc.WithInsecure())
 	if err != nil {
 		return nil, err
 	}
-	// defer conn.Close() // ulanishdan keyin yoppormasligi uchun hozircha defer keremas
-	article := blogpost.NewArticleServiceClient(connArticle)
 
-	connUser, err := grpc.Dial(cfg.UsersServiceGrpcHost+cfg.UsersServiceGrpcPort, grpc.WithInsecure())
-
-	if err != nil {
-		return nil, err
-	}
-	// defer conn.Close() // ulanishdan keyin yoppormasligi uchun hozircha defer keremas
-	user := blogpost.NewUserServiceClient(connUser)
+	product := eCommerce.NewProductServiceClient(connProduct)
 
 	conns := make([]*grpc.ClientConn, 0)
 	return &GrpcClients{
-		Author:  author,
-		Article: article,
-		Users:   user,
-		conns:   append(conns, connAuthor, connArticle, connUser),
+		Category: category,
+		Product:  product,
+		conns:    append(conns, connCategory, connProduct),
 	}, nil
 }
 

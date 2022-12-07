@@ -15,6 +15,9 @@ type Config struct {
 	Environment string // development, staging, production
 	HTTPPort    string
 
+	Default_Offset string
+	Default_Limit  string
+
 	CategoryServiceGrpcHost string
 	CategoryServiceGrpcPort string
 
@@ -35,11 +38,15 @@ func Load() Config {
 	config.Environment = cast.ToString(getOrReturnDefaultValue("ENVIRONMENT", "development"))
 	config.HTTPPort = cast.ToString(getOrReturnDefaultValue("HTTP_PORT", ":7070"))
 
+	config.Default_Offset = cast.ToString(getOrReturnDefaultValue("DEFAULT_OFFSET", "0"))
+	config.Default_Limit = cast.ToString(getOrReturnDefaultValue("DEFAULT_LIMIT", "10"))
+
 	config.CategoryServiceGrpcHost = cast.ToString(getOrReturnDefaultValue("CATEGORY_SERVICE_HOST", "localhost"))
 	config.CategoryServiceGrpcPort = cast.ToString(getOrReturnDefaultValue("CATEGORY_SERVICE_PORT", ":9000"))
 
 	config.ProductServiceGrpcHost = cast.ToString(getOrReturnDefaultValue("PRODUCT_SERVICE_HOST", "localhost"))
 	config.ProductServiceGrpcPort = cast.ToString(getOrReturnDefaultValue("PRODUCT_SERVICE_PORT", ":9000"))
+
 	return config
 }
 

@@ -52,8 +52,7 @@ func main() {
 	defer grpcClients.Close()
 
 	h := handlars.NewHandler(cfg, grpcClients)
-	// Gruppirovka qilindi
-	v1 := r.Group("v2")
+	v1 := r.Group("v1")
 	{
 		v1.Use(MyCORSMiddleware())
 		v1.POST("/login", h.Login)

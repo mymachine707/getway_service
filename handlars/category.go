@@ -2,42 +2,39 @@ package handlars
 
 import (
 	"mymachine707/models"
-	"mymachine707/protogen/blogpost"
+	"mymachine707/protogen/eCommerce"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
-// CreatAuthor godoc
+// CreatCategory godoc
 //
-//	@Summary		Creat Author
-//	@Description	Creat a new author
-//	@Tags			author
+//	@Summary		Creat Category
+//	@Description	Creat a new category
+//	@Tags			category
 //	@Accept			json
 //	@Produce		json
-//	@Param			author			body		models.CreateAuthorModul	true	"Author body"
+//	@Param			category		body		models.CreateCategoryModul	true	"Category body"
 //	@Param			Authorization	header		string						false	"Authorization"
-//	@Success		201				{object}	models.JSONResult{data=models.Author}
+//	@Success		201				{object}	models.JSONResult{data=models.Category}
 //	@Failure		400				{object}	models.JSONErrorResponse
-//	@Router			/v2/author [post]
-func (h *handler) CreatAuthor(c *gin.Context) {
+//	@Router			/v1/category [post]
+func (h *handler) CreatCategory(c *gin.Context) {
 
-	var body models.CreateAuthorModul
+	var body models.CreateCategoryModul
 
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, models.JSONErrorResponse{Error: err.Error()})
 		return
 	}
 
-	// validation should be here
-	// create new author
-
-	author, err := h.grpcClient.Author.CreateAuthor(c.Request.Context(), &blogpost.CreateAuthorRequest{
-		Firstname:  body.Firstname,
-		Lastname:   body.Lastname,
-		Middlename: body.Middlename,
+	category, err := h.grpcClient.Category.CreateCategory(c.Request.Context(), &eCommerce.CreateCategoryRequest{
+		CategoryName: body.Category_name,
+		Description:  body.Description,
 	})
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
 			Error: err.Error(),
@@ -45,33 +42,29 @@ func (h *handler) CreatAuthor(c *gin.Context) {
 		return
 	}
 
-	// Get author by id service ichida tekshirilgan
-
 	c.JSON(http.StatusCreated, models.JSONResult{
-		Message: "CreatAuthor",
-		Data:    author,
+		Message: "CreatCategory",
+		Data:    category,
 	})
 }
 
-// GetAuthorByID godoc
+// GetCategoryByID godoc
 //
-//	@Summary		GetAuthorByID
-//	@Description	get an author by id
-//	@Tags			author
+//	@Summary		GetCategoryByID
+//	@Description	get an category by id
+//	@Tags			category
 //	@Accept			json
 //	@Produce		json
-//	@Param			id				path		string	true	"Author id"
+//	@Param			id				path		string	true	"Category id"
 //	@Param			Authorization	header		string	false	"Authorization"
-//	@Success		201				{object}	models.JSONResult{data=models.PackedAuthorModel}
+//	@Success		201				{object}	models.JSONResult{data=models.PackedCategoryModel}
 //	@Failure		400				{object}	models.JSONErrorResponse
-//	@Router			/v2/author/{id} [get]
-func (h *handler) GetAuthorByID(c *gin.Context) {
+//	@Router			/v1/category/{id} [get]
+func (h *handler) GetCategoryByID(c *gin.Context) {
 
 	idStr := c.Param("id")
 
-	// validation
-
-	author, err := h.grpcClient.Author.GetAuthorById(c.Request.Context(), &blogpost.GetAuthorByIDRequest{
+	category, err := h.grpcClient.Category.GetCategoryById(c.Request.Context(), &eCommerce.GetCategoryByIDRequest{
 		Id: idStr,
 	})
 
@@ -81,29 +74,30 @@ func (h *handler) GetAuthorByID(c *gin.Context) {
 		})
 		return
 	}
+
 	c.JSON(http.StatusOK, models.JSONResult{
 		Message: "OK",
-		Data:    author,
+		Data:    category,
 	})
 }
 
-// GetAuthorList godoc
+// GetCategoryList godoc
 //
-//	@Summary		List authors
-//	@Description	GetAuthorList
-//	@Tags			author
+//	@Summary		List categorys
+//	@Description	GetCategoryList
+//	@Tags			category
 //	@Accept			json
 //	@Produce		json
 //	@Param			offset			query		int		false	"0"
 //	@Param			limit			query		int		false	"100"
 //	@Param			search			query		string	false	"search exapmle"
 //	@Param			Authorization	header		string	false	"Authorization"
-//	@Success		200				{object}	models.JSONResult{data=[]models.Author}
-//	@Router			/v2/author/ [get]
-func (h *handler) GetAuthorList(c *gin.Context) {
+//	@Success		200				{object}	models.JSONResult{data=[]models.Category}
+//	@Router			/v1/category/ [get]
+func (h *handler) GetCategoryList(c *gin.Context) {
 
-	offsetStr := c.DefaultQuery("offset", "0")
-	limitStr := c.DefaultQuery("limit", "100")
+	offsetStr := c.DefaultQuery("offset", h.cfg.Default_Offset)
+	limitStr := c.DefaultQuery("limit", h.cfg.Default_Limit)
 	searchStr := c.DefaultQuery("search", "")
 
 	offset, err := strconv.Atoi(offsetStr)
@@ -113,6 +107,7 @@ func (h *handler) GetAuthorList(c *gin.Context) {
 		})
 		return
 	}
+
 	limit, err := strconv.Atoi(limitStr)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.JSONErrorResponse{
@@ -120,11 +115,13 @@ func (h *handler) GetAuthorList(c *gin.Context) {
 		})
 		return
 	}
-	authorList, err := h.grpcClient.Author.GetAuthorList(c.Request.Context(), &blogpost.GetAuthorListRequest{
+
+	categoryList, err := h.grpcClient.Category.GetCategoryList(c.Request.Context(), &eCommerce.GetCategoryListRequest{
 		Offset: int32(offset),
 		Limit:  int32(limit),
 		Search: searchStr,
 	})
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
 			Error: err.Error(),
@@ -133,35 +130,36 @@ func (h *handler) GetAuthorList(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, models.JSONResult{
-		Message: "GetList OK",
-		Data:    authorList,
+		Message: "GetCategoryList OK",
+		Data:    categoryList,
 	})
 }
 
-// AuthorUpdate godoc
+// CategoryUpdate godoc
 //
-//	@Summary		My work !!! -- Update Author
-//	@Description	Update Author
-//	@Tags			author
+//	@Summary		Update Category
+//	@Description	Update Category
+//	@Tags			category
 //	@Accept			json
 //	@Produce		json
-//	@Param			author			body		models.UpdateAuthorModul	true	"Author body"
+//	@Param			category		body		models.UpdateCategoryModul	true	"Category body"
 //	@Param			Authorization	header		string						false	"Authorization"
-//	@Success		201				{object}	models.JSONResult{data=[]models.Author}
+//	@Success		201				{object}	models.JSONResult{data=[]models.Category}
 //	@Failure		400				{object}	models.JSONErrorResponse
-//	@Router			/v2/author/ [put]
-func (h *handler) AuthorUpdate(c *gin.Context) {
-	var body models.UpdateAuthorModul
+//	@Router			/v1/category/ [put]
+func (h *handler) CategoryUpdate(c *gin.Context) {
+
+	var body models.UpdateCategoryModul
+
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, models.JSONErrorResponse{Error: err.Error()})
 		return
 	}
 
-	author, err := h.grpcClient.Author.UpdateAuthor(c.Request.Context(), &blogpost.UpdateAuthorRequest{
-		Id:         body.ID,
-		Firstname:  body.Firstname,
-		Lastname:   body.Lastname,
-		Middlename: body.Middlename,
+	category, err := h.grpcClient.Category.UpdateCategory(c.Request.Context(), &eCommerce.UpdateCategoryRequest{
+		Id:           body.ID,
+		CategoryName: body.Category_name,
+		Description:  body.Description,
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
@@ -170,33 +168,29 @@ func (h *handler) AuthorUpdate(c *gin.Context) {
 		return
 	}
 
-	// Get author by id service ichida tekshirilgan
-
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Author Update",
-		"data":    author,
+		"message": "Category Updated",
+		"data":    category,
 	})
 
 }
 
-// DeleteAuthor godoc
+// DeleteCategory godoc
 //
-//	@Summary		My work!!! -- Delete Author
-//	@Description	get element by id and delete this author
-//	@Tags			author
+//	@Summary		Delete Category
+//	@Description	get element by id and delete this category
+//	@Tags			category
 //	@Accept			json
 //	@Produce		json
-//	@Param			id				path		string	true	"Author id"
+//	@Param			id				path		string	true	"Category id"
 //	@Param			Authorization	header		string	false	"Authorization"
-//	@Success		201				{object}	models.JSONResult{data=models.Author}
+//	@Success		201				{object}	models.JSONResult{data=models.Category}
 //	@Failure		400				{object}	models.JSONErrorResponse
-//	@Router			/v2/author/{id} [delete]
-func (h *handler) DeleteAuthor(c *gin.Context) {
+//	@Router			/v1/category/{id} [delete]
+func (h *handler) DeleteCategory(c *gin.Context) {
 	idStr := c.Param("id")
 
-	// Get author by id service ichida tekshirilgan
-
-	author, err := h.grpcClient.Author.DeleteAuthor(c.Request.Context(), &blogpost.DeleteAuthorRequest{
+	category, err := h.grpcClient.Category.DeleteCategory(c.Request.Context(), &eCommerce.DeleteCategoryRequest{
 		Id: idStr,
 	})
 	if err != nil {
@@ -207,8 +201,8 @@ func (h *handler) DeleteAuthor(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Author Deleted",
-		"data":    author,
+		"message": "Category Deleted",
+		"data":    category,
 	})
 
 }
