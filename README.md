@@ -17,3 +17,5 @@ Migrate Db:
 
 ctrl+f2  bir xil elementni hammasini bir vaqtda belgilash
 ctrl+D bir xil elementni bittadan belgilash
+
+2
