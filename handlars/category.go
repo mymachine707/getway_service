@@ -57,7 +57,7 @@ func (h *handler) CreatCategory(c *gin.Context) {
 //	@Produce		json
 //	@Param			id				path		string	true	"Category id"
 //	@Param			Authorization	header		string	false	"Authorization"
-//	@Success		201				{object}	models.JSONResult{data=models.PackedCategoryModel}
+//	@Success		201				{object}	models.JSONResult{data=models.Category}
 //	@Failure		400				{object}	models.JSONErrorResponse
 //	@Router			/v1/category/{id} [get]
 func (h *handler) GetCategoryByID(c *gin.Context) {

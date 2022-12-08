@@ -17,7 +17,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-// @license.name	Apache 2.0
+//	@license.name	Apache 2.0
 func main() {
 
 	cfg := config.Load()
@@ -55,8 +55,8 @@ func main() {
 	v1 := r.Group("v1")
 	{
 		v1.Use(MyCORSMiddleware())
-		v1.POST("/login", h.Login)
-		v1.POST("/user", h.CreateUser)
+		// v1.POST("/login", h.Login)
+		// v1.POST("/user", h.CreateUser)
 
 		v1.POST("/product", h.CreatProduct)
 		v1.GET("/product/:id", h.GetProductByID)

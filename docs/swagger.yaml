@@ -1,9 +1,11 @@
 definitions:
-  models.Article:
+  models.Category:
     properties:
-      author_id:
+      Category_name:
+        example: Lavash
         type: string
-      body:
+      Description:
+        example: Qaynoq va mazali Lavash
         type: string
       created_at:
         type: string
@@ -11,88 +13,39 @@ definitions:
         type: string
       id:
         type: string
-      title:
-        type: string
       updated_at:
         type: string
     required:
-    - author_id
-    - body
-    - title
+    - Category_name
+    - Description
     type: object
-  models.Author:
+  models.CreateCategoryModul:
     properties:
-      created_at:
+      Category_name:
+        example: Lavash
         type: string
-      deleted_at:
-        type: string
-      firstname:
-        example: John--example
-        maxLength: 50
-        minLength: 4
-        type: string
-      fullname:
-        type: string
-      id:
-        type: string
-      lastname:
-        example: Does--example
-        maxLength: 50
-        minLength: 4
-        type: string
-      middlename:
-        example: Stive
-        type: string
-      updated_at:
+      Description:
+        example: Qaynoq va mazali Lavash
         type: string
     required:
-    - firstname
-    - lastname
+    - Category_name
+    - Description
     type: object
-  models.CreateArticleModul:
+  models.CreateProductModul:
     properties:
-      author_id:
+      category_id:
         type: string
-      body:
+      description:
         type: string
-      title:
+      price:
+        type: string
+      product_name:
         type: string
     required:
-    - author_id
-    - body
-    - title
-    type: object
-  models.CreateAuthorModul:
-    properties:
-      firstname:
-        example: John
-        maxLength: 50
-        minLength: 4
-        type: string
-      lastname:
-        example: Does
-        maxLength: 50
-        minLength: 4
-        type: string
-      middlename:
-        example: Stive
-        type: string
-    required:
-    - firstname
-    - lastname
-    type: object
-  models.CreateUserModul:
-    properties:
-      password:
-        type: string
-      user_type:
-        type: string
-      username:
-        type: string
-    required:
-    - password
-    - user_type
-    - username
+    - category_id
+    - description
+    - price
+    - product_name
     type: object
   models.JSONErrorResponse:
     properties:
@@ -105,172 +58,76 @@ definitions:
       message:
         type: string
     type: object
-  models.LoginModul:
+  models.Product:
     properties:
-      password:
-        type: string
-      username:
-        type: string
-    required:
-    - password
-    - username
-    type: object
-  models.PackedArticleModel:
-    properties:
-      author_id:
-        $ref: '#/definitions/models.Author'
-      body:
+      category_id:
         type: string
       created_at:
         type: string
-      deleted_at:
+      description:
         type: string
       id:
         type: string
-      title:
+      price:
+        type: string
+      product_name:
         type: string
       updated_at:
         type: string
     required:
-    - author_id
-    - body
-    - id
-    - title
+    - category_id
+    - description
+    - price
+    - product_name
     type: object
-  models.PackedAuthorModel:
+  models.UpdateCategoryModul:
     properties:
-      created_at:
+      Category_name:
+        example: Lavash
         type: string
-      deleted_at:
-        type: string
-      firstname:
-        example: John
-        maxLength: 50
-        minLength: 4
-        type: string
-      fullname:
+      Description:
+        example: Qaynoq va mazali Lavash
         type: string
       id:
         type: string
-      lastname:
-        example: Does
-        maxLength: 50
-        minLength: 4
-        type: string
-      middlename:
-        example: Stive
-        type: string
-      updated_at:
-        type: string
     required:
-    - firstname
-    - lastname
+    - Category_name
+    - Description
+    - id
     type: object
-  models.TokenResponse:
+  models.UpdateProductModul:
     properties:
-      token:
+      category_id:
         type: string
-    type: object
-  models.UpdateArticleModul:
-    properties:
-      body:
+      description:
         type: string
       id:
         type: string
-      title:
+      price:
+        type: string
+      product_name:
         type: string
     required:
-    - body
-    - id
-    - title
-    type: object
-  models.UpdateAuthorModul:
-    properties:
-      firstname:
-        example: John
-        maxLength: 50
-        minLength: 4
-        type: string
-      id:
-        type: string
-      lastname:
-        example: Does
-        maxLength: 50
-        minLength: 4
-        type: string
-      middlename:
-        example: Stive
-        type: string
-    required:
-    - firstname
-    - id
-    - lastname
-    type: object
-  models.User:
-    properties:
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      password:
-        type: string
-      updated_at:
-        type: string
-      user_type:
-        type: string
-      username:
-        type: string
-    required:
-    - password
-    - user_type
-    - username
+    - category_id
+    - description
+    - price
+    - product_name
     type: object
 info:
   contact: {}
 paths:
-  /v2/User:
+  /v1/category:
     post:
       consumes:
       - application/json
-      description: Creat a new User
+      description: Creat a new category
       parameters:
-      - description: User body
+      - description: Category body
         in: body
-        name: User
+        name: category
         required: true
         schema:
-          $ref: '#/definitions/models.CreateUserModul'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            allOf:
-            - $ref: '#/definitions/models.JSONResult'
-            - properties:
-                data:
-                  $ref: '#/definitions/models.User'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.JSONErrorResponse'
-      summary: Creat User
-      tags:
-      - users
-  /v2/article:
-    post:
-      consumes:
-      - application/json
-      description: Creat a new article
-      parameters:
-      - description: Article body
-        in: body
-        name: article
-        required: true
-        schema:
-          $ref: '#/definitions/models.CreateArticleModul'
+          $ref: '#/definitions/models.CreateCategoryModul'
       - description: Authorization
         in: header
         name: Authorization
@@ -285,198 +142,20 @@ paths:
             - $ref: '#/definitions/models.JSONResult'
             - properties:
                 data:
-                  $ref: '#/definitions/models.Article'
+                  $ref: '#/definitions/models.Category'
               type: object
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/models.JSONErrorResponse'
-      summary: Creat Article
+      summary: Creat Category
       tags:
-      - article
-  /v2/article/:
+      - category
+  /v1/category/:
     get:
       consumes:
       - application/json
-      description: GetArticleList
-      parameters:
-      - description: "0"
-        in: query
-        name: offset
-        type: integer
-      - description: "100"
-        in: query
-        name: limit
-        type: integer
-      - default: ""
-        description: search
-        in: query
-        name: search
-        type: string
-      - description: Authorization
-        in: header
-        name: Authorization
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/models.JSONResult'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/models.Article'
-                  type: array
-              type: object
-      summary: List articles
-      tags:
-      - article
-    put:
-      consumes:
-      - application/json
-      description: Update Article
-      parameters:
-      - description: Article body
-        in: body
-        name: article
-        required: true
-        schema:
-          $ref: '#/definitions/models.UpdateArticleModul'
-      - description: Authorization
-        in: header
-        name: Authorization
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/models.JSONResult'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/models.Article'
-                  type: array
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.JSONErrorResponse'
-      summary: Update Article
-      tags:
-      - article
-  /v2/article/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: get element by id and delete this article
-      parameters:
-      - description: Article id
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Authorization
-        in: header
-        name: Authorization
-        type: string
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            allOf:
-            - $ref: '#/definitions/models.JSONResult'
-            - properties:
-                data:
-                  $ref: '#/definitions/models.Article'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.JSONErrorResponse'
-      summary: Delete Article
-      tags:
-      - article
-    get:
-      consumes:
-      - application/json
-      description: get an article by id
-      parameters:
-      - description: Article id
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Authorization
-        in: header
-        name: Authorization
-        type: string
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            allOf:
-            - $ref: '#/definitions/models.JSONResult'
-            - properties:
-                data:
-                  $ref: '#/definitions/models.PackedArticleModel'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.JSONErrorResponse'
-      summary: GetArticleByID
-      tags:
-      - article
-  /v2/author:
-    post:
-      consumes:
-      - application/json
-      description: Creat a new author
-      parameters:
-      - description: Author body
-        in: body
-        name: author
-        required: true
-        schema:
-          $ref: '#/definitions/models.CreateAuthorModul'
-      - description: Authorization
-        in: header
-        name: Authorization
-        type: string
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            allOf:
-            - $ref: '#/definitions/models.JSONResult'
-            - properties:
-                data:
-                  $ref: '#/definitions/models.Author'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.JSONErrorResponse'
-      summary: Creat Author
-      tags:
-      - author
-  /v2/author/:
-    get:
-      consumes:
-      - application/json
-      description: GetAuthorList
+      description: GetCategoryList
       parameters:
       - description: "0"
         in: query
@@ -505,23 +184,23 @@ paths:
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/models.Author'
+                    $ref: '#/definitions/models.Category'
                   type: array
               type: object
-      summary: List authors
+      summary: List categorys
       tags:
-      - author
+      - category
     put:
       consumes:
       - application/json
-      description: Update Author
+      description: Update Category
       parameters:
-      - description: Author body
+      - description: Category body
         in: body
-        name: author
+        name: category
         required: true
         schema:
-          $ref: '#/definitions/models.UpdateAuthorModul'
+          $ref: '#/definitions/models.UpdateCategoryModul'
       - description: Authorization
         in: header
         name: Authorization
@@ -537,23 +216,23 @@ paths:
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/models.Author'
+                    $ref: '#/definitions/models.Category'
                   type: array
               type: object
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/models.JSONErrorResponse'
-      summary: My work !!! -- Update Author
+      summary: Update Category
       tags:
-      - author
-  /v2/author/{id}:
+      - category
+  /v1/category/{id}:
     delete:
       consumes:
       - application/json
-      description: get element by id and delete this author
+      description: get element by id and delete this category
       parameters:
-      - description: Author id
+      - description: Category id
         in: path
         name: id
         required: true
@@ -572,21 +251,21 @@ paths:
             - $ref: '#/definitions/models.JSONResult'
             - properties:
                 data:
-                  $ref: '#/definitions/models.Author'
+                  $ref: '#/definitions/models.Category'
               type: object
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/models.JSONErrorResponse'
-      summary: My work!!! -- Delete Author
+      summary: Delete Category
       tags:
-      - author
+      - category
     get:
       consumes:
       - application/json
-      description: get an author by id
+      description: get an category by id
       parameters:
-      - description: Author id
+      - description: Category id
         in: path
         name: id
         required: true
@@ -605,51 +284,20 @@ paths:
             - $ref: '#/definitions/models.JSONResult'
             - properties:
                 data:
-                  $ref: '#/definitions/models.PackedAuthorModel'
+                  $ref: '#/definitions/models.Category'
               type: object
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/models.JSONErrorResponse'
-      summary: GetAuthorByID
+      summary: GetCategoryByID
       tags:
-      - author
-  /v2/login:
-    post:
-      consumes:
-      - application/json
-      description: Login
-      parameters:
-      - description: Login body
-        in: body
-        name: users
-        required: true
-        schema:
-          $ref: '#/definitions/models.LoginModul'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            allOf:
-            - $ref: '#/definitions/models.JSONResult'
-            - properties:
-                data:
-                  $ref: '#/definitions/models.TokenResponse'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.JSONErrorResponse'
-      summary: Login
-      tags:
-      - users
-  /v2/my-articles/:
+      - category
+  /v1/my-products/:
     get:
       consumes:
       - application/json
-      description: SearchArticleByMyUsername
+      description: SearchProductByMyUsername
       parameters:
       - description: "0"
         in: query
@@ -679,10 +327,188 @@ paths:
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/models.Article'
+                    $ref: '#/definitions/models.Product'
                   type: array
               type: object
-      summary: List articles
+      summary: List products
       tags:
-      - article
+      - product
+  /v1/product:
+    post:
+      consumes:
+      - application/json
+      description: Creat a new product
+      parameters:
+      - description: Product body
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateProductModul'
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Product'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.JSONErrorResponse'
+      summary: Creat Product
+      tags:
+      - product
+  /v1/product/:
+    get:
+      consumes:
+      - application/json
+      description: GetProductList
+      parameters:
+      - description: "0"
+        in: query
+        name: offset
+        type: integer
+      - description: "100"
+        in: query
+        name: limit
+        type: integer
+      - default: ""
+        description: search
+        in: query
+        name: search
+        type: string
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Product'
+                  type: array
+              type: object
+      summary: List products
+      tags:
+      - product
+    put:
+      consumes:
+      - application/json
+      description: Update Product
+      parameters:
+      - description: Product body
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateProductModul'
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Product'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.JSONErrorResponse'
+      summary: Update Product
+      tags:
+      - product
+  /v1/product/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: get element by id and delete this product
+      parameters:
+      - description: Product id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Product'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.JSONErrorResponse'
+      summary: Delete Product
+      tags:
+      - product
+    get:
+      consumes:
+      - application/json
+      description: get an product by id
+      parameters:
+      - description: Product id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Product'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.JSONErrorResponse'
+      summary: GetProductByID
+      tags:
+      - product
 swagger: "2.0"

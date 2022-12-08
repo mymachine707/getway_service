@@ -59,7 +59,7 @@ func (h *handler) CreatProduct(c *gin.Context) {
 //	@Produce		json
 //	@Param			id				path		string	true	"Product id"
 //	@Param			Authorization	header		string	false	"Authorization"
-//	@Success		201				{object}	models.JSONResult{data=models.PackedProductModel}
+//	@Success		201				{object}	models.JSONResult{data=models.Product}
 //	@Failure		400				{object}	models.JSONErrorResponse
 //	@Router			/v1/product/{id} [get]
 func (h *handler) GetProductByID(c *gin.Context) {

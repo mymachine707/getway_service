@@ -16,9 +16,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/v2/User": {
+        "/v1/category": {
             "post": {
-                "description": "Creat a new User",
+                "description": "Creat a new category",
                 "consumes": [
                     "application/json"
                 ],
@@ -26,69 +26,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "category"
                 ],
-                "summary": "Creat User",
+                "summary": "Creat Category",
                 "parameters": [
                     {
-                        "description": "User body",
-                        "name": "User",
+                        "description": "Category body",
+                        "name": "category",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CreateUserModul"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/models.JSONResult"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/models.User"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.JSONErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v2/article": {
-            "post": {
-                "description": "Creat a new article",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "article"
-                ],
-                "summary": "Creat Article",
-                "parameters": [
-                    {
-                        "description": "Article body",
-                        "name": "article",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.CreateArticleModul"
+                            "$ref": "#/definitions/models.CreateCategoryModul"
                         }
                     },
                     {
@@ -110,7 +58,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/models.Article"
+                                            "$ref": "#/definitions/models.Category"
                                         }
                                     }
                                 }
@@ -126,9 +74,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/v2/article/": {
+        "/v1/category/": {
             "get": {
-                "description": "GetArticleList",
+                "description": "GetCategoryList",
                 "consumes": [
                     "application/json"
                 ],
@@ -136,301 +84,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "article"
+                    "category"
                 ],
-                "summary": "List articles",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "0",
-                        "name": "offset",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "100",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "default": "",
-                        "description": "search",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/models.JSONResult"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/models.Article"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "Update Article",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "article"
-                ],
-                "summary": "Update Article",
-                "parameters": [
-                    {
-                        "description": "Article body",
-                        "name": "article",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.UpdateArticleModul"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/models.JSONResult"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/models.Article"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.JSONErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v2/article/{id}": {
-            "get": {
-                "description": "get an article by id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "article"
-                ],
-                "summary": "GetArticleByID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Article id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/models.JSONResult"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/models.PackedArticleModel"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.JSONErrorResponse"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "get element by id and delete this article",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "article"
-                ],
-                "summary": "Delete Article",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Article id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/models.JSONResult"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/models.Article"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.JSONErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v2/author": {
-            "post": {
-                "description": "Creat a new author",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "author"
-                ],
-                "summary": "Creat Author",
-                "parameters": [
-                    {
-                        "description": "Author body",
-                        "name": "author",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.CreateAuthorModul"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/models.JSONResult"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/models.Author"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.JSONErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v2/author/": {
-            "get": {
-                "description": "GetAuthorList",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "author"
-                ],
-                "summary": "List authors",
+                "summary": "List categorys",
                 "parameters": [
                     {
                         "type": "integer",
@@ -471,7 +127,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/models.Author"
+                                                "$ref": "#/definitions/models.Category"
                                             }
                                         }
                                     }
@@ -482,7 +138,7 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "description": "Update Author",
+                "description": "Update Category",
                 "consumes": [
                     "application/json"
                 ],
@@ -490,17 +146,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "author"
+                    "category"
                 ],
-                "summary": "My work !!! -- Update Author",
+                "summary": "Update Category",
                 "parameters": [
                     {
-                        "description": "Author body",
-                        "name": "author",
+                        "description": "Category body",
+                        "name": "category",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.UpdateAuthorModul"
+                            "$ref": "#/definitions/models.UpdateCategoryModul"
                         }
                     },
                     {
@@ -524,7 +180,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/models.Author"
+                                                "$ref": "#/definitions/models.Category"
                                             }
                                         }
                                     }
@@ -541,9 +197,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/v2/author/{id}": {
+        "/v1/category/{id}": {
             "get": {
-                "description": "get an author by id",
+                "description": "get an category by id",
                 "consumes": [
                     "application/json"
                 ],
@@ -551,13 +207,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "author"
+                    "category"
                 ],
-                "summary": "GetAuthorByID",
+                "summary": "GetCategoryByID",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Author id",
+                        "description": "Category id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -581,7 +237,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/models.PackedAuthorModel"
+                                            "$ref": "#/definitions/models.Category"
                                         }
                                     }
                                 }
@@ -597,7 +253,7 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "get element by id and delete this author",
+                "description": "get element by id and delete this category",
                 "consumes": [
                     "application/json"
                 ],
@@ -605,13 +261,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "author"
+                    "category"
                 ],
-                "summary": "My work!!! -- Delete Author",
+                "summary": "Delete Category",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Author id",
+                        "description": "Category id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -635,7 +291,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/models.Author"
+                                            "$ref": "#/definitions/models.Category"
                                         }
                                     }
                                 }
@@ -651,61 +307,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/v2/login": {
-            "post": {
-                "description": "Login",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "users"
-                ],
-                "summary": "Login",
-                "parameters": [
-                    {
-                        "description": "Login body",
-                        "name": "users",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.LoginModul"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/models.JSONResult"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/models.TokenResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.JSONErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v2/my-articles/": {
+        "/v1/my-products/": {
             "get": {
-                "description": "SearchArticleByMyUsername",
+                "description": "SearchProductByMyUsername",
                 "consumes": [
                     "application/json"
                 ],
@@ -713,9 +317,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "article"
+                    "product"
                 ],
-                "summary": "List articles",
+                "summary": "List products",
                 "parameters": [
                     {
                         "type": "integer",
@@ -757,7 +361,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/models.Article"
+                                                "$ref": "#/definitions/models.Product"
                                             }
                                         }
                                     }
@@ -767,22 +371,315 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/v1/product": {
+            "post": {
+                "description": "Creat a new product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "Creat Product",
+                "parameters": [
+                    {
+                        "description": "Product body",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateProductModul"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.Product"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSONErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/product/": {
+            "get": {
+                "description": "GetProductList",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "List products",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "0",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "100",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "default": "",
+                        "description": "search",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Product"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update Product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "Update Product",
+                "parameters": [
+                    {
+                        "description": "Product body",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateProductModul"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Product"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSONErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/product/{id}": {
+            "get": {
+                "description": "get an product by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "GetProductByID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.Product"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSONErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "get element by id and delete this product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "Delete Product",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.Product"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSONErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "models.Article": {
+        "models.Category": {
             "type": "object",
             "required": [
-                "author_id",
-                "body",
-                "title"
+                "Category_name",
+                "Description"
             ],
             "properties": {
-                "author_id": {
-                    "type": "string"
+                "Category_name": {
+                    "type": "string",
+                    "example": "Lavash"
                 },
-                "body": {
-                    "type": "string"
+                "Description": {
+                    "type": "string",
+                    "example": "Qaynoq va mazali Lavash"
                 },
                 "created_at": {
                     "type": "string"
@@ -793,113 +690,47 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "title": {
-                    "type": "string"
-                },
                 "updated_at": {
                     "type": "string"
                 }
             }
         },
-        "models.Author": {
+        "models.CreateCategoryModul": {
             "type": "object",
             "required": [
-                "firstname",
-                "lastname"
+                "Category_name",
+                "Description"
             ],
             "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "firstname": {
+                "Category_name": {
                     "type": "string",
-                    "maxLength": 50,
-                    "minLength": 4,
-                    "example": "John--example"
+                    "example": "Lavash"
                 },
-                "fullname": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "lastname": {
+                "Description": {
                     "type": "string",
-                    "maxLength": 50,
-                    "minLength": 4,
-                    "example": "Does--example"
-                },
-                "middlename": {
-                    "type": "string",
-                    "example": "Stive"
-                },
-                "updated_at": {
-                    "type": "string"
+                    "example": "Qaynoq va mazali Lavash"
                 }
             }
         },
-        "models.CreateArticleModul": {
+        "models.CreateProductModul": {
             "type": "object",
             "required": [
-                "author_id",
-                "body",
-                "title"
+                "category_id",
+                "description",
+                "price",
+                "product_name"
             ],
             "properties": {
-                "author_id": {
+                "category_id": {
                     "type": "string"
                 },
-                "body": {
+                "description": {
                     "type": "string"
                 },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.CreateAuthorModul": {
-            "type": "object",
-            "required": [
-                "firstname",
-                "lastname"
-            ],
-            "properties": {
-                "firstname": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 4,
-                    "example": "John"
-                },
-                "lastname": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 4,
-                    "example": "Does"
-                },
-                "middlename": {
-                    "type": "string",
-                    "example": "Stive"
-                }
-            }
-        },
-        "models.CreateUserModul": {
-            "type": "object",
-            "required": [
-                "password",
-                "user_type",
-                "username"
-            ],
-            "properties": {
-                "password": {
+                "price": {
                     "type": "string"
                 },
-                "user_type": {
-                    "type": "string"
-                },
-                "username": {
+                "product_name": {
                     "type": "string"
                 }
             }
@@ -921,46 +752,31 @@ const docTemplate = `{
                 }
             }
         },
-        "models.LoginModul": {
+        "models.Product": {
             "type": "object",
             "required": [
-                "password",
-                "username"
+                "category_id",
+                "description",
+                "price",
+                "product_name"
             ],
             "properties": {
-                "password": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.PackedArticleModel": {
-            "type": "object",
-            "required": [
-                "author_id",
-                "body",
-                "id",
-                "title"
-            ],
-            "properties": {
-                "author_id": {
-                    "$ref": "#/definitions/models.Author"
-                },
-                "body": {
+                "category_id": {
                     "type": "string"
                 },
                 "created_at": {
                     "type": "string"
                 },
-                "deleted_at": {
+                "description": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
-                "title": {
+                "price": {
+                    "type": "string"
+                },
+                "product_name": {
                     "type": "string"
                 },
                 "updated_at": {
@@ -968,126 +784,49 @@ const docTemplate = `{
                 }
             }
         },
-        "models.PackedAuthorModel": {
+        "models.UpdateCategoryModul": {
             "type": "object",
             "required": [
-                "firstname",
-                "lastname"
+                "Category_name",
+                "Description",
+                "id"
             ],
             "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "firstname": {
+                "Category_name": {
                     "type": "string",
-                    "maxLength": 50,
-                    "minLength": 4,
-                    "example": "John"
+                    "example": "Lavash"
                 },
-                "fullname": {
+                "Description": {
+                    "type": "string",
+                    "example": "Qaynoq va mazali Lavash"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UpdateProductModul": {
+            "type": "object",
+            "required": [
+                "category_id",
+                "description",
+                "price",
+                "product_name"
+            ],
+            "properties": {
+                "category_id": {
+                    "type": "string"
+                },
+                "description": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
-                "lastname": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 4,
-                    "example": "Does"
-                },
-                "middlename": {
-                    "type": "string",
-                    "example": "Stive"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.TokenResponse": {
-            "type": "object",
-            "properties": {
-                "token": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.UpdateArticleModul": {
-            "type": "object",
-            "required": [
-                "body",
-                "id",
-                "title"
-            ],
-            "properties": {
-                "body": {
+                "price": {
                     "type": "string"
                 },
-                "id": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.UpdateAuthorModul": {
-            "type": "object",
-            "required": [
-                "firstname",
-                "id",
-                "lastname"
-            ],
-            "properties": {
-                "firstname": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 4,
-                    "example": "John"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "lastname": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 4,
-                    "example": "Does"
-                },
-                "middlename": {
-                    "type": "string",
-                    "example": "Stive"
-                }
-            }
-        },
-        "models.User": {
-            "type": "object",
-            "required": [
-                "password",
-                "user_type",
-                "username"
-            ],
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "user_type": {
-                    "type": "string"
-                },
-                "username": {
+                "product_name": {
                     "type": "string"
                 }
             }
