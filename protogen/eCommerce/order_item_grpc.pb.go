@@ -26,7 +26,7 @@ type OrderItemServiceClient interface {
 	CreateOrderItem(ctx context.Context, in *CreateOrderItemRequest, opts ...grpc.CallOption) (*OrderItem, error)
 	DeleteOrderItem(ctx context.Context, in *DeleteOrderItemRequest, opts ...grpc.CallOption) (*OrderItem, error)
 	GetOrderItemList(ctx context.Context, in *GetOrderItemListRequest, opts ...grpc.CallOption) (*GetOrderItemListResponse, error)
-	GetOrderItemById(ctx context.Context, in *GetOrderItemByIDRequest, opts ...grpc.CallOption) (*GetOrderItemByIDResponse, error)
+	GetOrderItemById(ctx context.Context, in *GetOrderItemByIDRequest, opts ...grpc.CallOption) (*OrderItem, error)
 }
 
 type orderItemServiceClient struct {
@@ -73,8 +73,8 @@ func (c *orderItemServiceClient) GetOrderItemList(ctx context.Context, in *GetOr
 	return out, nil
 }
 
-func (c *orderItemServiceClient) GetOrderItemById(ctx context.Context, in *GetOrderItemByIDRequest, opts ...grpc.CallOption) (*GetOrderItemByIDResponse, error) {
-	out := new(GetOrderItemByIDResponse)
+func (c *orderItemServiceClient) GetOrderItemById(ctx context.Context, in *GetOrderItemByIDRequest, opts ...grpc.CallOption) (*OrderItem, error) {
+	out := new(OrderItem)
 	err := c.cc.Invoke(ctx, "/OrderItemService/GetOrderItemById", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -90,7 +90,7 @@ type OrderItemServiceServer interface {
 	CreateOrderItem(context.Context, *CreateOrderItemRequest) (*OrderItem, error)
 	DeleteOrderItem(context.Context, *DeleteOrderItemRequest) (*OrderItem, error)
 	GetOrderItemList(context.Context, *GetOrderItemListRequest) (*GetOrderItemListResponse, error)
-	GetOrderItemById(context.Context, *GetOrderItemByIDRequest) (*GetOrderItemByIDResponse, error)
+	GetOrderItemById(context.Context, *GetOrderItemByIDRequest) (*OrderItem, error)
 	mustEmbedUnimplementedOrderItemServiceServer()
 }
 
@@ -110,7 +110,7 @@ func (UnimplementedOrderItemServiceServer) DeleteOrderItem(context.Context, *Del
 func (UnimplementedOrderItemServiceServer) GetOrderItemList(context.Context, *GetOrderItemListRequest) (*GetOrderItemListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOrderItemList not implemented")
 }
-func (UnimplementedOrderItemServiceServer) GetOrderItemById(context.Context, *GetOrderItemByIDRequest) (*GetOrderItemByIDResponse, error) {
+func (UnimplementedOrderItemServiceServer) GetOrderItemById(context.Context, *GetOrderItemByIDRequest) (*OrderItem, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOrderItemById not implemented")
 }
 func (UnimplementedOrderItemServiceServer) mustEmbedUnimplementedOrderItemServiceServer() {}
