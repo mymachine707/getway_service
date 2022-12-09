@@ -12,15 +12,15 @@ import (
 // CreatOrder godoc
 //
 //	@Summary		Creat Order
-//	@Description	Creat a new category
-//	@Tags			category
+//	@Description	Creat a new order
+//	@Tags			order
 //	@Accept			json
 //	@Produce		json
-//	@Param			category		body		models.CreateOrderModul	true	"Order body"
+//	@Param			order		body		models.CreateOrderModul	true	"Order body"
 //	@Param			Authorization	header		string						false	"Authorization"
 //	@Success		201				{object}	models.JSONResult{data=models.Order}
 //	@Failure		400				{object}	models.JSONErrorResponse
-//	@Router			/v1/category [post]
+//	@Router			/v1/order [post]
 func (h *handler) CreatOrder(c *gin.Context) {
 
 	var body models.CreateOrderModul
@@ -30,7 +30,7 @@ func (h *handler) CreatOrder(c *gin.Context) {
 		return
 	}
 
-	category, err := h.grpcClient.Order.CreateOrder(c.Request.Context(), &eCommerce.CreateOrderRequest{
+	order, err := h.grpcClient.Order.CreateOrder(c.Request.Context(), &eCommerce.CreateOrderRequest{
 		ProductId: body.Product_id,
 		ClientId:  body.Client_id,
 		Count:     body.Count,
@@ -45,42 +45,42 @@ func (h *handler) CreatOrder(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, models.JSONResult{
 		Message: "CreatOrder",
-		Data:    category,
+		Data:    order,
 	})
 }
 
 // GetOrderByID godoc
 //
 //	@Summary		GetOrderByID
-//	@Description	get an category by id
-//	@Tags			category
+//	@Description	get an order by id
+//	@Tags			order
 //	@Accept			json
 //	@Produce		json
 //	@Param			id				path		string	true	"Order id"
 //	@Param			Authorization	header		string	false	"Authorization"
 //	@Success		201				{object}	models.JSONResult{data=models.Order}
 //	@Failure		400				{object}	models.JSONErrorResponse
-//	@Router			/v1/category/{id} [get]
+//	@Router			/v1/order/{id} [get]
 func (h *handler) GetOrderByID(c *gin.Context) {
 
 	idStr := c.Param("id")
 
-	category, err := h.grpcClient.Order.GetOrderById(c.Request.Context(), &eCommerce.GetOrderByIDRequest{
+	order, err := h.grpcClient.Order.GetOrderById(c.Request.Context(), &eCommerce.GetOrderByIDRequest{
 		Id: idStr,
 	})
 
 	// get order with product info
 
-	product, err := h.grpcClient.Product.GetProductById(c.Request.Context(), &eCommerce.GetProductByIDRequest{
-		Id: idStr,
-	})
+	// product, err := h.grpcClient.Product.GetProductById(c.Request.Context(), &eCommerce.GetProductByIDRequest{
+	// 	Id: idStr,
+	// })
 
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
-			Error: err.Error(),
-		})
-		return
-	}
+	// if err != nil {
+	// 	c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
+	// 		Error: err.Error(),
+	// 	})
+	// 	return
+	// }
 
 	//---------------------------------
 
@@ -93,15 +93,15 @@ func (h *handler) GetOrderByID(c *gin.Context) {
 
 	c.JSON(http.StatusOK, models.JSONResult{
 		Message: "GetOrderById OK",
-		Data:    category,
+		Data:    order,
 	})
 }
 
 // GetOrderList godoc
 //
-//	@Summary		List categorys
+//	@Summary		List orders
 //	@Description	GetOrderList
-//	@Tags			category
+//	@Tags			order
 //	@Accept			json
 //	@Produce		json
 //	@Param			offset			query		int		false	"0"
@@ -109,7 +109,7 @@ func (h *handler) GetOrderByID(c *gin.Context) {
 //	@Param			search			query		string	false	"search exapmle"
 //	@Param			Authorization	header		string	false	"Authorization"
 //	@Success		200				{object}	models.JSONResult{data=[]models.Order}
-//	@Router			/v1/category/ [get]
+//	@Router			/v1/order/ [get]
 func (h *handler) GetOrderList(c *gin.Context) {
 
 	offsetStr := c.DefaultQuery("offset", h.cfg.Default_Offset)
@@ -131,7 +131,7 @@ func (h *handler) GetOrderList(c *gin.Context) {
 		return
 	}
 
-	categoryList, err := h.grpcClient.Order.GetOrderList(c.Request.Context(), &eCommerce.GetOrderListRequest{
+	orderList, err := h.grpcClient.Order.GetOrderList(c.Request.Context(), &eCommerce.GetOrderListRequest{
 		Offset: int32(offset),
 		Limit:  int32(limit),
 	})
@@ -145,7 +145,7 @@ func (h *handler) GetOrderList(c *gin.Context) {
 
 	c.JSON(http.StatusOK, models.JSONResult{
 		Message: "GetOrderList OK",
-		Data:    categoryList,
+		Data:    orderList,
 	})
 }
 
@@ -153,14 +153,14 @@ func (h *handler) GetOrderList(c *gin.Context) {
 //
 //	@Summary		Update Order
 //	@Description	Update Order
-//	@Tags			category
+//	@Tags			order
 //	@Accept			json
 //	@Produce		json
-//	@Param			category		body		models.UpdateOrderModul	true	"Order body"
+//	@Param			order		body		models.UpdateOrderModul	true	"Order body"
 //	@Param			Authorization	header		string						false	"Authorization"
 //	@Success		201				{object}	models.JSONResult{data=[]models.Order}
 //	@Failure		400				{object}	models.JSONErrorResponse
-//	@Router			/v1/category/ [put]
+//	@Router			/v1/order/ [put]
 func (h *handler) OrderUpdate(c *gin.Context) {
 
 	var body models.UpdateOrderModul
@@ -170,7 +170,7 @@ func (h *handler) OrderUpdate(c *gin.Context) {
 		return
 	}
 
-	category, err := h.grpcClient.Order.UpdateOrder(c.Request.Context(), &eCommerce.UpdateOrderRequest{
+	order, err := h.grpcClient.Order.UpdateOrder(c.Request.Context(), &eCommerce.UpdateOrderRequest{
 		Id:    body.ID,
 		Count: body.Count,
 	})
@@ -183,7 +183,7 @@ func (h *handler) OrderUpdate(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Order Updated",
-		"data":    category,
+		"data":    order,
 	})
 
 }
@@ -191,19 +191,19 @@ func (h *handler) OrderUpdate(c *gin.Context) {
 // DeleteOrder godoc
 //
 //	@Summary		Delete Order
-//	@Description	get element by id and delete this category
-//	@Tags			category
+//	@Description	get element by id and delete this order
+//	@Tags			order
 //	@Accept			json
 //	@Produce		json
 //	@Param			id				path		string	true	"Order id"
 //	@Param			Authorization	header		string	false	"Authorization"
 //	@Success		201				{object}	models.JSONResult{data=models.Order}
 //	@Failure		400				{object}	models.JSONErrorResponse
-//	@Router			/v1/category/{id} [delete]
+//	@Router			/v1/order/{id} [delete]
 func (h *handler) DeleteOrder(c *gin.Context) {
 	idStr := c.Param("id")
 
-	category, err := h.grpcClient.Order.DeleteOrder(c.Request.Context(), &eCommerce.DeleteOrderRequest{
+	order, err := h.grpcClient.Order.DeleteOrder(c.Request.Context(), &eCommerce.DeleteOrderRequest{
 		Id: idStr,
 	})
 	if err != nil {
@@ -215,7 +215,7 @@ func (h *handler) DeleteOrder(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Order Deleted",
-		"data":    category,
+		"data":    order,
 	})
 
 }

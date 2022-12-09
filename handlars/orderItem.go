@@ -9,30 +9,30 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// CreatCategory godoc
+// CreatOrderItem godoc
 //
-//	@Summary		Creat Category
-//	@Description	Creat a new category
-//	@Tags			category
+//	@Summary		Creat OrderItem
+//	@Description	Creat a new orderItem
+//	@Tags			orderItem
 //	@Accept			json
 //	@Produce		json
-//	@Param			category		body		models.CreateCategoryModul	true	"Category body"
+//	@Param			orderItem		body		models.CreateOrderItemModul	true	"OrderItem body"
 //	@Param			Authorization	header		string						false	"Authorization"
-//	@Success		201				{object}	models.JSONResult{data=models.Category}
+//	@Success		201				{object}	models.JSONResult{data=models.OrderItem}
 //	@Failure		400				{object}	models.JSONErrorResponse
-//	@Router			/v1/category [post]
-func (h *handler) CreatCategory(c *gin.Context) {
+//	@Router			/v1/orderItem [post]
+func (h *handler) CreatOrderItem(c *gin.Context) {
 
-	var body models.CreateCategoryModul
+	var body models.CreateOrderItemModul
 
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, models.JSONErrorResponse{Error: err.Error()})
 		return
 	}
 
-	category, err := h.grpcClient.Category.CreateCategory(c.Request.Context(), &eCommerce.CreateCategoryRequest{
-		CategoryName: body.Category_name,
-		Description:  body.Description,
+	orderItem, err := h.grpcClient.OrderItem.CreateOrderItem(c.Request.Context(), &eCommerce.CreateOrderItemRequest{
+		ClientId:   body.Client_id,
+		TotalPrice: body.TotalPrice,
 	})
 
 	if err != nil {
@@ -43,28 +43,28 @@ func (h *handler) CreatCategory(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, models.JSONResult{
-		Message: "CreatCategory",
-		Data:    category,
+		Message: "CreatOrderItem",
+		Data:    orderItem,
 	})
 }
 
-// GetCategoryByID godoc
+// GetOrderItemByID godoc
 //
-//	@Summary		GetCategoryByID
-//	@Description	get an category by id
-//	@Tags			category
+//	@Summary		GetOrderItemByID
+//	@Description	get an orderItem by id
+//	@Tags			orderItem
 //	@Accept			json
 //	@Produce		json
-//	@Param			id				path		string	true	"Category id"
+//	@Param			id				path		string	true	"OrderItem id"
 //	@Param			Authorization	header		string	false	"Authorization"
-//	@Success		201				{object}	models.JSONResult{data=models.Category}
+//	@Success		201				{object}	models.JSONResult{data=models.OrderItem}
 //	@Failure		400				{object}	models.JSONErrorResponse
-//	@Router			/v1/category/{id} [get]
-func (h *handler) GetCategoryByID(c *gin.Context) {
+//	@Router			/v1/orderItem/{id} [get]
+func (h *handler) GetOrderItemByID(c *gin.Context) {
 
 	idStr := c.Param("id")
 
-	category, err := h.grpcClient.Category.GetCategoryById(c.Request.Context(), &eCommerce.GetCategoryByIDRequest{
+	orderItem, err := h.grpcClient.OrderItem.GetOrderItemById(c.Request.Context(), &eCommerce.GetOrderItemByIDRequest{
 		Id: idStr,
 	})
 
@@ -77,28 +77,27 @@ func (h *handler) GetCategoryByID(c *gin.Context) {
 
 	c.JSON(http.StatusOK, models.JSONResult{
 		Message: "OK",
-		Data:    category,
+		Data:    orderItem,
 	})
 }
 
-// GetCategoryList godoc
+// GetOrderItemList godoc
 //
-//	@Summary		List categorys
-//	@Description	GetCategoryList
-//	@Tags			category
+//	@Summary		List orderItems
+//	@Description	GetOrderItemList
+//	@Tags			orderItem
 //	@Accept			json
 //	@Produce		json
 //	@Param			offset			query		int		false	"0"
 //	@Param			limit			query		int		false	"100"
 //	@Param			search			query		string	false	"search exapmle"
 //	@Param			Authorization	header		string	false	"Authorization"
-//	@Success		200				{object}	models.JSONResult{data=[]models.Category}
-//	@Router			/v1/category/ [get]
-func (h *handler) GetCategoryList(c *gin.Context) {
+//	@Success		200				{object}	models.JSONResult{data=[]models.OrderItem}
+//	@Router			/v1/orderItem/ [get]
+func (h *handler) GetOrderItemList(c *gin.Context) {
 
 	offsetStr := c.DefaultQuery("offset", h.cfg.Default_Offset)
 	limitStr := c.DefaultQuery("limit", h.cfg.Default_Limit)
-	searchStr := c.DefaultQuery("search", "")
 
 	offset, err := strconv.Atoi(offsetStr)
 	if err != nil {
@@ -116,10 +115,9 @@ func (h *handler) GetCategoryList(c *gin.Context) {
 		return
 	}
 
-	categoryList, err := h.grpcClient.Category.GetCategoryList(c.Request.Context(), &eCommerce.GetCategoryListRequest{
+	orderItemList, err := h.grpcClient.OrderItem.GetOrderItemList(c.Request.Context(), &eCommerce.GetOrderItemListRequest{
 		Offset: int32(offset),
 		Limit:  int32(limit),
-		Search: searchStr,
 	})
 
 	if err != nil {
@@ -130,67 +128,27 @@ func (h *handler) GetCategoryList(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, models.JSONResult{
-		Message: "GetCategoryList OK",
-		Data:    categoryList,
+		Message: "GetOrderItemList OK",
+		Data:    orderItemList,
 	})
 }
 
-// CategoryUpdate godoc
+// DeleteOrderItem godoc
 //
-//	@Summary		Update Category
-//	@Description	Update Category
-//	@Tags			category
+//	@Summary		Delete OrderItem
+//	@Description	get element by id and delete this orderItem
+//	@Tags			orderItem
 //	@Accept			json
 //	@Produce		json
-//	@Param			category		body		models.UpdateCategoryModul	true	"Category body"
-//	@Param			Authorization	header		string						false	"Authorization"
-//	@Success		201				{object}	models.JSONResult{data=[]models.Category}
-//	@Failure		400				{object}	models.JSONErrorResponse
-//	@Router			/v1/category/ [put]
-func (h *handler) CategoryUpdate(c *gin.Context) {
-
-	var body models.UpdateCategoryModul
-
-	if err := c.ShouldBindJSON(&body); err != nil {
-		c.JSON(http.StatusBadRequest, models.JSONErrorResponse{Error: err.Error()})
-		return
-	}
-
-	category, err := h.grpcClient.Category.UpdateCategory(c.Request.Context(), &eCommerce.UpdateCategoryRequest{
-		Id:           body.ID,
-		CategoryName: body.Category_name,
-		Description:  body.Description,
-	})
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
-			Error: err.Error(),
-		})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Category Updated",
-		"data":    category,
-	})
-
-}
-
-// DeleteCategory godoc
-//
-//	@Summary		Delete Category
-//	@Description	get element by id and delete this category
-//	@Tags			category
-//	@Accept			json
-//	@Produce		json
-//	@Param			id				path		string	true	"Category id"
+//	@Param			id				path		string	true	"OrderItem id"
 //	@Param			Authorization	header		string	false	"Authorization"
-//	@Success		201				{object}	models.JSONResult{data=models.Category}
+//	@Success		201				{object}	models.JSONResult{data=models.OrderItem}
 //	@Failure		400				{object}	models.JSONErrorResponse
-//	@Router			/v1/category/{id} [delete]
-func (h *handler) DeleteCategory(c *gin.Context) {
+//	@Router			/v1/orderItem/{id} [delete]
+func (h *handler) DeleteOrderItem(c *gin.Context) {
 	idStr := c.Param("id")
 
-	category, err := h.grpcClient.Category.DeleteCategory(c.Request.Context(), &eCommerce.DeleteCategoryRequest{
+	orderItem, err := h.grpcClient.OrderItem.DeleteOrderItem(c.Request.Context(), &eCommerce.DeleteOrderItemRequest{
 		Id: idStr,
 	})
 	if err != nil {
@@ -201,8 +159,8 @@ func (h *handler) DeleteCategory(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Category Deleted",
-		"data":    category,
+		"message": "OrderItem Deleted",
+		"data":    orderItem,
 	})
 
 }

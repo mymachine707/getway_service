@@ -23,6 +23,15 @@ type Config struct {
 
 	ProductServiceGrpcHost string
 	ProductServiceGrpcPort string
+
+	OrderServiceGrpcHost string
+	OrderServiceGrpcPort string
+
+	OrderItemServiceGrpcHost string
+	OrderItemServiceGrpcPort string
+
+	ClientServiceGrpcHost string
+	ClientServiceGrpcPort string
 }
 
 // Load ...
@@ -46,6 +55,15 @@ func Load() Config {
 
 	config.ProductServiceGrpcHost = cast.ToString(getOrReturnDefaultValue("PRODUCT_SERVICE_HOST", "localhost"))
 	config.ProductServiceGrpcPort = cast.ToString(getOrReturnDefaultValue("PRODUCT_SERVICE_PORT", ":9000"))
+
+	config.OrderServiceGrpcHost = cast.ToString(getOrReturnDefaultValue("ORDER_SERVICE_HOST", "localhost"))
+	config.OrderServiceGrpcPort = cast.ToString(getOrReturnDefaultValue("ORDER_SERVICE_PORT", ":9001"))
+
+	config.OrderItemServiceGrpcHost = cast.ToString(getOrReturnDefaultValue("ORDERITEM_SERVICE_HOST", "localhost"))
+	config.OrderItemServiceGrpcPort = cast.ToString(getOrReturnDefaultValue("ORDERITEM_SERVICE_PORT", ":9001"))
+
+	config.ClientServiceGrpcHost = cast.ToString(getOrReturnDefaultValue("CLIENT_SERVICE_HOST", "localhost"))
+	config.ClientServiceGrpcHost = cast.ToString(getOrReturnDefaultValue("CLIENT_SERVICE_PORT", ":9002"))
 
 	return config
 }

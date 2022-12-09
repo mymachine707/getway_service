@@ -19,6 +19,38 @@ definitions:
     - Category_name
     - Description
     type: object
+  models.Client:
+    properties:
+      address:
+        example: wall street
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      firstname:
+        example: John
+        type: string
+      id:
+        type: string
+      lastname:
+        example: Doe
+        type: string
+      phoneNumber:
+        example: "998797456321"
+        type: string
+      type:
+        example: client
+        type: string
+      updated_at:
+        type: string
+    required:
+    - address
+    - firstname
+    - lastname
+    - phoneNumber
+    - type
+    type: object
   models.CreateCategoryModul:
     properties:
       Category_name:
@@ -30,6 +62,58 @@ definitions:
     required:
     - Category_name
     - Description
+    type: object
+  models.CreateClientModul:
+    properties:
+      address:
+        example: wall street
+        type: string
+      firstname:
+        example: John
+        type: string
+      lastname:
+        example: Doe
+        type: string
+      phoneNumber:
+        example: "998797456321"
+        type: string
+      type:
+        example: client
+        type: string
+    required:
+    - address
+    - firstname
+    - lastname
+    - phoneNumber
+    - type
+    type: object
+  models.CreateOrderItemModul:
+    properties:
+      client_id:
+        example: uuid
+        type: string
+      totalPrice:
+        example: uuid
+        type: string
+    required:
+    - client_id
+    - totalPrice
+    type: object
+  models.CreateOrderModul:
+    properties:
+      client_id:
+        example: uuid
+        type: string
+      count:
+        example: "2"
+        type: string
+      product_id:
+        example: uuid
+        type: string
+    required:
+    - client_id
+    - count
+    - product_id
     type: object
   models.CreateProductModul:
     properties:
@@ -57,6 +141,46 @@ definitions:
       data: {}
       message:
         type: string
+    type: object
+  models.Order:
+    properties:
+      client_id:
+        example: uuid
+        type: string
+      count:
+        example: "2"
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      product_id:
+        example: uuid
+        type: string
+      updated_at:
+        type: string
+    required:
+    - client_id
+    - count
+    - product_id
+    type: object
+  models.OrderItem:
+    properties:
+      client_id:
+        example: uuid
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      totalPrice:
+        example: uuid
+        type: string
+      updated_at:
+        type: string
+    required:
+    - client_id
+    - totalPrice
     type: object
   models.Product:
     properties:
@@ -93,6 +217,43 @@ definitions:
     required:
     - Category_name
     - Description
+    - id
+    type: object
+  models.UpdateClientModul:
+    properties:
+      address:
+        example: wall street
+        type: string
+      firstname:
+        example: John
+        type: string
+      id:
+        type: string
+      lastname:
+        example: Doe
+        type: string
+      phoneNumber:
+        example: "998797456321"
+        type: string
+      type:
+        example: client
+        type: string
+    required:
+    - address
+    - firstname
+    - lastname
+    - phoneNumber
+    - type
+    type: object
+  models.UpdateOrderModul:
+    properties:
+      count:
+        example: "2"
+        type: string
+      id:
+        type: string
+    required:
+    - count
     - id
     type: object
   models.UpdateProductModul:
@@ -293,6 +454,183 @@ paths:
       summary: GetCategoryByID
       tags:
       - category
+  /v1/client:
+    post:
+      consumes:
+      - application/json
+      description: Creat a new client
+      parameters:
+      - description: Client body
+        in: body
+        name: client
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateClientModul'
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Client'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.JSONErrorResponse'
+      summary: Creat Client
+      tags:
+      - client
+  /v1/client/:
+    get:
+      consumes:
+      - application/json
+      description: GetClientList
+      parameters:
+      - description: "0"
+        in: query
+        name: offset
+        type: integer
+      - description: "100"
+        in: query
+        name: limit
+        type: integer
+      - description: search exapmle
+        in: query
+        name: search
+        type: string
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Client'
+                  type: array
+              type: object
+      summary: List clients
+      tags:
+      - client
+    put:
+      consumes:
+      - application/json
+      description: Update Client
+      parameters:
+      - description: Client body
+        in: body
+        name: client
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateClientModul'
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Client'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.JSONErrorResponse'
+      summary: Update Client
+      tags:
+      - client
+  /v1/client/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: get element by id and delete this client
+      parameters:
+      - description: Client id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Client'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.JSONErrorResponse'
+      summary: Delete Client
+      tags:
+      - client
+    get:
+      consumes:
+      - application/json
+      description: get an client by id
+      parameters:
+      - description: Client id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Client'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.JSONErrorResponse'
+      summary: GetClientByID
+      tags:
+      - client
   /v1/my-products/:
     get:
       consumes:
@@ -333,6 +671,324 @@ paths:
       summary: List products
       tags:
       - product
+  /v1/order:
+    post:
+      consumes:
+      - application/json
+      description: Creat a new order
+      parameters:
+      - description: Order body
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateOrderModul'
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Order'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.JSONErrorResponse'
+      summary: Creat Order
+      tags:
+      - order
+  /v1/order/:
+    get:
+      consumes:
+      - application/json
+      description: GetOrderList
+      parameters:
+      - description: "0"
+        in: query
+        name: offset
+        type: integer
+      - description: "100"
+        in: query
+        name: limit
+        type: integer
+      - description: search exapmle
+        in: query
+        name: search
+        type: string
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Order'
+                  type: array
+              type: object
+      summary: List orders
+      tags:
+      - order
+    put:
+      consumes:
+      - application/json
+      description: Update Order
+      parameters:
+      - description: Order body
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateOrderModul'
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Order'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.JSONErrorResponse'
+      summary: Update Order
+      tags:
+      - order
+  /v1/order/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: get element by id and delete this order
+      parameters:
+      - description: Order id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Order'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.JSONErrorResponse'
+      summary: Delete Order
+      tags:
+      - order
+    get:
+      consumes:
+      - application/json
+      description: get an order by id
+      parameters:
+      - description: Order id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Order'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.JSONErrorResponse'
+      summary: GetOrderByID
+      tags:
+      - order
+  /v1/orderItem:
+    post:
+      consumes:
+      - application/json
+      description: Creat a new orderItem
+      parameters:
+      - description: OrderItem body
+        in: body
+        name: orderItem
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateOrderItemModul'
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.OrderItem'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.JSONErrorResponse'
+      summary: Creat OrderItem
+      tags:
+      - orderItem
+  /v1/orderItem/:
+    get:
+      consumes:
+      - application/json
+      description: GetOrderItemList
+      parameters:
+      - description: "0"
+        in: query
+        name: offset
+        type: integer
+      - description: "100"
+        in: query
+        name: limit
+        type: integer
+      - description: search exapmle
+        in: query
+        name: search
+        type: string
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.OrderItem'
+                  type: array
+              type: object
+      summary: List orderItems
+      tags:
+      - orderItem
+  /v1/orderItem/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: get element by id and delete this orderItem
+      parameters:
+      - description: OrderItem id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.OrderItem'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.JSONErrorResponse'
+      summary: Delete OrderItem
+      tags:
+      - orderItem
+    get:
+      consumes:
+      - application/json
+      description: get an orderItem by id
+      parameters:
+      - description: OrderItem id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.OrderItem'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.JSONErrorResponse'
+      summary: GetOrderItemByID
+      tags:
+      - orderItem
   /v1/product:
     post:
       consumes:

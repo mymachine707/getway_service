@@ -17,7 +17,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-//	@license.name	Apache 2.0
+// @license.name	Apache 2.0
 func main() {
 
 	cfg := config.Load()
@@ -70,6 +70,23 @@ func main() {
 		v1.GET("/category", h.GetCategoryList)
 		v1.PUT("/category", h.CategoryUpdate)
 		v1.DELETE("/category/:id", h.DeleteCategory)
+
+		v1.POST("/order", h.CreatOrder)
+		v1.GET("/order/:id", h.GetOrderByID)
+		v1.GET("/order", h.GetOrderList)
+		v1.PUT("/order", h.OrderUpdate)
+		v1.DELETE("/order/:id", h.DeleteOrder)
+
+		v1.POST("/orderItem", h.CreatOrderItem)
+		v1.GET("/orderItem/:id", h.GetOrderItemByID)
+		v1.GET("/orderItem", h.GetOrderItemList)
+		v1.DELETE("/orderItem/:id", h.DeleteOrderItem)
+
+		v1.POST("/client", h.CreatClient)
+		v1.GET("/client/:id", h.GetClientByID)
+		v1.GET("/client", h.GetClientList)
+		v1.PUT("/client", h.ClientUpdate)
+		v1.DELETE("/client/:id", h.DeleteClient)
 	}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

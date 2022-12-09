@@ -307,6 +307,297 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/client": {
+            "post": {
+                "description": "Creat a new client",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "client"
+                ],
+                "summary": "Creat Client",
+                "parameters": [
+                    {
+                        "description": "Client body",
+                        "name": "client",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateClientModul"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.Client"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSONErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/client/": {
+            "get": {
+                "description": "GetClientList",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "client"
+                ],
+                "summary": "List clients",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "0",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "100",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "search exapmle",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Client"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update Client",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "client"
+                ],
+                "summary": "Update Client",
+                "parameters": [
+                    {
+                        "description": "Client body",
+                        "name": "client",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateClientModul"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Client"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSONErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/client/{id}": {
+            "get": {
+                "description": "get an client by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "client"
+                ],
+                "summary": "GetClientByID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Client id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.Client"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSONErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "get element by id and delete this client",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "client"
+                ],
+                "summary": "Delete Client",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Client id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.Client"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSONErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/my-products/": {
             "get": {
                 "description": "SearchProductByMyUsername",
@@ -367,6 +658,529 @@ const docTemplate = `{
                                     }
                                 }
                             ]
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/order": {
+            "post": {
+                "description": "Creat a new order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "Creat Order",
+                "parameters": [
+                    {
+                        "description": "Order body",
+                        "name": "order",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateOrderModul"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.Order"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSONErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/order/": {
+            "get": {
+                "description": "GetOrderList",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "List orders",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "0",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "100",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "search exapmle",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Order"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update Order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "Update Order",
+                "parameters": [
+                    {
+                        "description": "Order body",
+                        "name": "order",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateOrderModul"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Order"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSONErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/order/{id}": {
+            "get": {
+                "description": "get an order by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "GetOrderByID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Order id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.Order"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSONErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "get element by id and delete this order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "Delete Order",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Order id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.Order"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSONErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/orderItem": {
+            "post": {
+                "description": "Creat a new orderItem",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "orderItem"
+                ],
+                "summary": "Creat OrderItem",
+                "parameters": [
+                    {
+                        "description": "OrderItem body",
+                        "name": "orderItem",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateOrderItemModul"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.OrderItem"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSONErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/orderItem/": {
+            "get": {
+                "description": "GetOrderItemList",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "orderItem"
+                ],
+                "summary": "List orderItems",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "0",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "100",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "search exapmle",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.OrderItem"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/orderItem/{id}": {
+            "get": {
+                "description": "get an orderItem by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "orderItem"
+                ],
+                "summary": "GetOrderItemByID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "OrderItem id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.OrderItem"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSONErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "get element by id and delete this orderItem",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "orderItem"
+                ],
+                "summary": "Delete OrderItem",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "OrderItem id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.JSONResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.OrderItem"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.JSONErrorResponse"
                         }
                     }
                 }
@@ -695,6 +1509,50 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Client": {
+            "type": "object",
+            "required": [
+                "address",
+                "firstname",
+                "lastname",
+                "phoneNumber",
+                "type"
+            ],
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "wall street"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "firstname": {
+                    "type": "string",
+                    "example": "John"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lastname": {
+                    "type": "string",
+                    "example": "Doe"
+                },
+                "phoneNumber": {
+                    "type": "string",
+                    "example": "998797456321"
+                },
+                "type": {
+                    "type": "string",
+                    "example": "client"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "models.CreateCategoryModul": {
             "type": "object",
             "required": [
@@ -709,6 +1567,77 @@ const docTemplate = `{
                 "Description": {
                     "type": "string",
                     "example": "Qaynoq va mazali Lavash"
+                }
+            }
+        },
+        "models.CreateClientModul": {
+            "type": "object",
+            "required": [
+                "address",
+                "firstname",
+                "lastname",
+                "phoneNumber",
+                "type"
+            ],
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "wall street"
+                },
+                "firstname": {
+                    "type": "string",
+                    "example": "John"
+                },
+                "lastname": {
+                    "type": "string",
+                    "example": "Doe"
+                },
+                "phoneNumber": {
+                    "type": "string",
+                    "example": "998797456321"
+                },
+                "type": {
+                    "type": "string",
+                    "example": "client"
+                }
+            }
+        },
+        "models.CreateOrderItemModul": {
+            "type": "object",
+            "required": [
+                "client_id",
+                "totalPrice"
+            ],
+            "properties": {
+                "client_id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "totalPrice": {
+                    "type": "string",
+                    "example": "uuid"
+                }
+            }
+        },
+        "models.CreateOrderModul": {
+            "type": "object",
+            "required": [
+                "client_id",
+                "count",
+                "product_id"
+            ],
+            "properties": {
+                "client_id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "count": {
+                    "type": "string",
+                    "example": "2"
+                },
+                "product_id": {
+                    "type": "string",
+                    "example": "uuid"
                 }
             }
         },
@@ -748,6 +1677,63 @@ const docTemplate = `{
             "properties": {
                 "data": {},
                 "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Order": {
+            "type": "object",
+            "required": [
+                "client_id",
+                "count",
+                "product_id"
+            ],
+            "properties": {
+                "client_id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "count": {
+                    "type": "string",
+                    "example": "2"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.OrderItem": {
+            "type": "object",
+            "required": [
+                "client_id",
+                "totalPrice"
+            ],
+            "properties": {
+                "client_id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "totalPrice": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "updated_at": {
                     "type": "string"
                 }
             }
@@ -799,6 +1785,57 @@ const docTemplate = `{
                 "Description": {
                     "type": "string",
                     "example": "Qaynoq va mazali Lavash"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UpdateClientModul": {
+            "type": "object",
+            "required": [
+                "address",
+                "firstname",
+                "lastname",
+                "phoneNumber",
+                "type"
+            ],
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "wall street"
+                },
+                "firstname": {
+                    "type": "string",
+                    "example": "John"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lastname": {
+                    "type": "string",
+                    "example": "Doe"
+                },
+                "phoneNumber": {
+                    "type": "string",
+                    "example": "998797456321"
+                },
+                "type": {
+                    "type": "string",
+                    "example": "client"
+                }
+            }
+        },
+        "models.UpdateOrderModul": {
+            "type": "object",
+            "required": [
+                "count",
+                "id"
+            ],
+            "properties": {
+                "count": {
+                    "type": "string",
+                    "example": "2"
                 },
                 "id": {
                     "type": "string"
