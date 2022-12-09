@@ -33,9 +33,11 @@ func (h *handler) CreatClient(c *gin.Context) {
 	client, err := h.grpcClient.Client.CreateClient(c.Request.Context(), &eCommerce.CreateClientRequest{
 		Firstname:   body.Firstname,
 		Lastname:    body.Lastname,
+		Username:    body.Username,
 		PhoneNumber: body.PhoneNumber,
 		Address:     body.Address,
 		Type:        body.Type,
+		Password:    body.Password,
 	})
 
 	if err != nil {
@@ -161,9 +163,11 @@ func (h *handler) ClientUpdate(c *gin.Context) {
 		Id:          body.Id,
 		Firstname:   body.Firstname,
 		Lastname:    body.Lastname,
+		Username:    body.Username,
 		PhoneNumber: body.PhoneNumber,
 		Address:     body.Address,
 		Type:        body.Type,
+		Password:    body.Password,
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
