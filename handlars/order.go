@@ -30,6 +30,19 @@ func (h *handler) CreatOrder(c *gin.Context) {
 		return
 	}
 
+	// Product bizda bor yo'ligini tekshiramiz!!!
+	_, err := h.grpcClient.Product.GetProductById(c.Request.Context(), &eCommerce.GetProductByIDRequest{
+		Id: body.Product_id,
+	})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
+			Error: "We do not have this product!",
+		})
+		return
+	}
+	// Tekshiruvdan o'tsa keyingi bosqichga boradi. O'tmasa chiqib ketadi.
+
 	order, err := h.grpcClient.Order.CreateOrder(c.Request.Context(), &eCommerce.CreateOrderRequest{
 		ProductId: body.Product_id,
 		ClientId:  body.Client_id,
