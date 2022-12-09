@@ -36,6 +36,9 @@ definitions:
       lastname:
         example: Doe
         type: string
+      password:
+        example: client
+        type: string
       phoneNumber:
         example: "998797456321"
         type: string
@@ -44,12 +47,17 @@ definitions:
         type: string
       updated_at:
         type: string
+      username:
+        example: Jdoe002
+        type: string
     required:
     - address
     - firstname
     - lastname
+    - password
     - phoneNumber
     - type
+    - username
     type: object
   models.CreateCategoryModul:
     properties:
@@ -74,29 +82,41 @@ definitions:
       lastname:
         example: Doe
         type: string
+      password:
+        example: client
+        type: string
       phoneNumber:
         example: "998797456321"
         type: string
       type:
         example: client
         type: string
+      username:
+        example: Jdoe002
+        type: string
     required:
     - address
     - firstname
     - lastname
+    - password
     - phoneNumber
     - type
+    - username
     type: object
   models.CreateOrderItemModul:
     properties:
       client_id:
         example: uuid
         type: string
+      productName:
+        example: Lavash
+        type: string
       totalPrice:
         example: uuid
         type: string
     required:
     - client_id
+    - productName
     - totalPrice
     type: object
   models.CreateOrderModul:
@@ -173,6 +193,9 @@ definitions:
         type: string
       id:
         type: string
+      productName:
+        example: Lavash
+        type: string
       totalPrice:
         example: uuid
         type: string
@@ -180,6 +203,7 @@ definitions:
         type: string
     required:
     - client_id
+    - productName
     - totalPrice
     type: object
   models.Product:
@@ -232,18 +256,26 @@ definitions:
       lastname:
         example: Doe
         type: string
+      password:
+        example: client
+        type: string
       phoneNumber:
         example: "998797456321"
         type: string
       type:
         example: client
         type: string
+      username:
+        example: Jdoe002
+        type: string
     required:
     - address
     - firstname
     - lastname
+    - password
     - phoneNumber
     - type
+    - username
     type: object
   models.UpdateOrderModul:
     properties:

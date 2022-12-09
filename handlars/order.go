@@ -31,7 +31,7 @@ func (h *handler) CreatOrder(c *gin.Context) {
 	}
 
 	// Product bizda bor yo'ligini tekshiramiz!!!
-	_, err := h.grpcClient.Product.GetProductById(c.Request.Context(), &eCommerce.GetProductByIDRequest{
+	product, err := h.grpcClient.Product.GetProductById(c.Request.Context(), &eCommerce.GetProductByIDRequest{
 		Id: body.Product_id,
 	})
 
@@ -43,10 +43,57 @@ func (h *handler) CreatOrder(c *gin.Context) {
 	}
 	// Tekshiruvdan o'tsa keyingi bosqichga boradi. O'tmasa chiqib ketadi.
 
+	// Client bizda bor yo'ligini tekshiramiz!!!
+	client, err := h.grpcClient.Client.GetClientById(c.Request.Context(), &eCommerce.GetClientByIDRequest{
+		Id: body.Client_id,
+	})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
+			Error: "You are not registered! Please register!",
+		})
+		return
+	}
+	// Tekshiruvdan o'tsa keyingi bosqichga boradi. O'tmasa chiqib ketadi.
+
 	order, err := h.grpcClient.Order.CreateOrder(c.Request.Context(), &eCommerce.CreateOrderRequest{
-		ProductId: body.Product_id,
-		ClientId:  body.Client_id,
+		ProductId: product.Id,
+		ClientId:  client.Id,
 		Count:     body.Count,
+	})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
+			Error: err.Error(),
+		})
+		return
+	}
+
+	// Todo calculate total price
+	price, err := strconv.Atoi(product.Price)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.JSONErrorResponse{
+			Error: err.Error(),
+		})
+		return
+	}
+	count, err := strconv.Atoi(body.Count)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.JSONErrorResponse{
+			Error: err.Error(),
+		})
+		return
+	}
+	totalPriceProduct := price * count
+	total := strconv.Itoa(totalPriceProduct)
+	// finish
+
+	// Orderni OrderItemga kirgazish
+
+	orderItem, err := h.grpcClient.OrderItem.CreateOrderItem(c.Request.Context(), &eCommerce.CreateOrderItemRequest{
+		ProductName: product.ProductName,
+		ClientId:    body.Client_id,
+		TotalPrice:  total,
 	})
 
 	if err != nil {
@@ -59,6 +106,11 @@ func (h *handler) CreatOrder(c *gin.Context) {
 	c.JSON(http.StatusCreated, models.JSONResult{
 		Message: "CreatOrder",
 		Data:    order,
+	})
+
+	c.JSON(http.StatusCreated, models.JSONResult{
+		Message: "OrderItem",
+		Data:    orderItem,
 	})
 }
 

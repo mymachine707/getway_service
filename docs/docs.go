@@ -1515,8 +1515,10 @@ const docTemplate = `{
                 "address",
                 "firstname",
                 "lastname",
+                "password",
                 "phoneNumber",
-                "type"
+                "type",
+                "username"
             ],
             "properties": {
                 "address": {
@@ -1540,6 +1542,10 @@ const docTemplate = `{
                     "type": "string",
                     "example": "Doe"
                 },
+                "password": {
+                    "type": "string",
+                    "example": "client"
+                },
                 "phoneNumber": {
                     "type": "string",
                     "example": "998797456321"
@@ -1550,6 +1556,10 @@ const docTemplate = `{
                 },
                 "updated_at": {
                     "type": "string"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "Jdoe002"
                 }
             }
         },
@@ -1576,8 +1586,10 @@ const docTemplate = `{
                 "address",
                 "firstname",
                 "lastname",
+                "password",
                 "phoneNumber",
-                "type"
+                "type",
+                "username"
             ],
             "properties": {
                 "address": {
@@ -1592,6 +1604,10 @@ const docTemplate = `{
                     "type": "string",
                     "example": "Doe"
                 },
+                "password": {
+                    "type": "string",
+                    "example": "client"
+                },
                 "phoneNumber": {
                     "type": "string",
                     "example": "998797456321"
@@ -1599,6 +1615,10 @@ const docTemplate = `{
                 "type": {
                     "type": "string",
                     "example": "client"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "Jdoe002"
                 }
             }
         },
@@ -1606,12 +1626,17 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "client_id",
+                "productName",
                 "totalPrice"
             ],
             "properties": {
                 "client_id": {
                     "type": "string",
                     "example": "uuid"
+                },
+                "productName": {
+                    "type": "string",
+                    "example": "Lavash"
                 },
                 "totalPrice": {
                     "type": "string",
@@ -1716,6 +1741,7 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "client_id",
+                "productName",
                 "totalPrice"
             ],
             "properties": {
@@ -1728,6 +1754,10 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "string"
+                },
+                "productName": {
+                    "type": "string",
+                    "example": "Lavash"
                 },
                 "totalPrice": {
                     "type": "string",
@@ -1797,8 +1827,10 @@ const docTemplate = `{
                 "address",
                 "firstname",
                 "lastname",
+                "password",
                 "phoneNumber",
-                "type"
+                "type",
+                "username"
             ],
             "properties": {
                 "address": {
@@ -1816,6 +1848,10 @@ const docTemplate = `{
                     "type": "string",
                     "example": "Doe"
                 },
+                "password": {
+                    "type": "string",
+                    "example": "client"
+                },
                 "phoneNumber": {
                     "type": "string",
                     "example": "998797456321"
@@ -1823,6 +1859,10 @@ const docTemplate = `{
                 "type": {
                     "type": "string",
                     "example": "client"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "Jdoe002"
                 }
             }
         },

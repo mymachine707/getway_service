@@ -31,8 +31,9 @@ func (h *handler) CreatOrderItem(c *gin.Context) {
 	}
 
 	orderItem, err := h.grpcClient.OrderItem.CreateOrderItem(c.Request.Context(), &eCommerce.CreateOrderItemRequest{
-		ClientId:   body.Client_id,
-		TotalPrice: body.TotalPrice,
+		ProductName: body.ProductName,
+		ClientId:    body.Client_id,
+		TotalPrice:  body.TotalPrice,
 	})
 
 	if err != nil {
