@@ -10,6 +10,7 @@ import (
 type GrpcClients struct {
 	Category eCommerce.CategoryServiceClient
 	Product  eCommerce.ProductServiceClient
+	Order    eCommerce.OrderServiceClient
 
 	conns []*grpc.ClientConn
 }

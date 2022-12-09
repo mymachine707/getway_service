@@ -427,15 +427,6 @@ type GetOrderByIDResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	//	message Product {
-	//	    string id = 1;
-	//	    string category_id = 2;
-	//	    string product_name = 3;
-	//	    string description = 4;
-	//	    string price = 5;
-	//	    string created_at = 6;
-	//	    string updated_at = 7;
-	//	}
 	Id        string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	ProductId string `protobuf:"bytes,2,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
 	ClientId  string `protobuf:"bytes,3,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
