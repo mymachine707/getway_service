@@ -131,21 +131,17 @@ func (h *handler) GetOrderByID(c *gin.Context) {
 		Id: idStr,
 	})
 
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
+			Error: err.Error(),
+		})
+		return
+	}
 	// get order with product info
 
-	// product, err := h.grpcClient.Product.GetProductById(c.Request.Context(), &eCommerce.GetProductByIDRequest{
-	// 	Id: idStr,
-	// })
-
-	// if err != nil {
-	// 	c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
-	// 		Error: err.Error(),
-	// 	})
-	// 	return
-	// }
-
-	//---------------------------------
-
+	product, err := h.grpcClient.Product.GetProductById(c.Request.Context(), &eCommerce.GetProductByIDRequest{
+		Id: order.ProductId,
+	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
 			Error: err.Error(),
@@ -153,9 +149,27 @@ func (h *handler) GetOrderByID(c *gin.Context) {
 		return
 	}
 
+	//---------------------------------
+
 	c.JSON(http.StatusOK, models.JSONResult{
 		Message: "GetOrderById OK",
-		Data:    order,
+		Data: eCommerce.GetOrderByIDResponse{
+			Id:        order.Id,
+			ProductId: order.ProductId,
+			Product: &eCommerce.Product{
+				Id:          product.Id,
+				CategoryId:  product.Category.Id,
+				ProductName: product.ProductName,
+				Description: product.Description,
+				Price:       product.Price,
+				CreatedAt:   product.CreatedAt,
+				UpdatedAt:   product.UpdatedAt,
+			},
+			ClientId:       order.ClientId,
+			ClientUsername: order.ClientUsername,
+			CreatedAt:      order.CreatedAt,
+			UpdatedAt:      order.UpdatedAt,
+		},
 	})
 }
 
