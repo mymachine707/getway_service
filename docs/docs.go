@@ -1625,11 +1625,16 @@ const docTemplate = `{
         "models.CreateOrderItemModul": {
             "type": "object",
             "required": [
+                "client_fullname",
                 "client_id",
                 "productName",
                 "totalPrice"
             ],
             "properties": {
+                "client_fullname": {
+                    "type": "string",
+                    "example": "uuid"
+                },
                 "client_id": {
                     "type": "string",
                     "example": "uuid"
@@ -1740,11 +1745,16 @@ const docTemplate = `{
         "models.OrderItem": {
             "type": "object",
             "required": [
+                "client_fullname",
                 "client_id",
                 "productName",
                 "totalPrice"
             ],
             "properties": {
+                "client_fullname": {
+                    "type": "string",
+                    "example": "John Doe"
+                },
                 "client_id": {
                     "type": "string",
                     "example": "uuid"

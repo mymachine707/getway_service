@@ -91,9 +91,10 @@ func (h *handler) CreatOrder(c *gin.Context) {
 	// Orderni OrderItemga kirgazish
 
 	_, err = h.grpcClient.OrderItem.CreateOrderItem(c.Request.Context(), &eCommerce.CreateOrderItemRequest{
-		ProductName: product.ProductName,
-		ClientId:    body.Client_id,
-		TotalPrice:  total,
+		ProductName:    product.ProductName,
+		ClientId:       body.Client_id,
+		ClientFullname: client.Firstname + " " + client.Lastname,
+		TotalPrice:     total,
 	})
 
 	if err != nil {
