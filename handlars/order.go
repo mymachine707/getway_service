@@ -90,7 +90,7 @@ func (h *handler) CreatOrder(c *gin.Context) {
 
 	// Orderni OrderItemga kirgazish
 
-	orderItem, err := h.grpcClient.OrderItem.CreateOrderItem(c.Request.Context(), &eCommerce.CreateOrderItemRequest{
+	_, err = h.grpcClient.OrderItem.CreateOrderItem(c.Request.Context(), &eCommerce.CreateOrderItemRequest{
 		ProductName: product.ProductName,
 		ClientId:    body.Client_id,
 		TotalPrice:  total,
@@ -108,10 +108,6 @@ func (h *handler) CreatOrder(c *gin.Context) {
 		Data:    order,
 	})
 
-	c.JSON(http.StatusCreated, models.JSONResult{
-		Message: "OrderItem",
-		Data:    orderItem,
-	})
 }
 
 // GetOrderByID godoc
