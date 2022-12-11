@@ -225,7 +225,6 @@ func (h *handler) ProductUpdate(c *gin.Context) {
 
 	product, err := h.grpcClient.Product.UpdateProduct(c.Request.Context(), &eCommerce.UpdateProductRequest{
 		Id:          body.ID,
-		ProductName: body.Product_name,
 		Description: body.Description,
 		Price:       body.Price,
 	})

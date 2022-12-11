@@ -1910,28 +1910,16 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "address",
-                "firstname",
-                "lastname",
                 "password",
-                "phoneNumber",
-                "type",
-                "username"
+                "phoneNumber"
             ],
             "properties": {
                 "address": {
                     "type": "string",
                     "example": "wall street"
                 },
-                "firstname": {
-                    "type": "string",
-                    "example": "John"
-                },
                 "id": {
                     "type": "string"
-                },
-                "lastname": {
-                    "type": "string",
-                    "example": "Doe"
                 },
                 "password": {
                     "type": "string",
@@ -1940,14 +1928,6 @@ const docTemplate = `{
                 "phoneNumber": {
                     "type": "string",
                     "example": "998797456321"
-                },
-                "type": {
-                    "type": "string",
-                    "example": "client"
-                },
-                "username": {
-                    "type": "string",
-                    "example": "Jdoe002"
                 }
             }
         },
@@ -1970,15 +1950,10 @@ const docTemplate = `{
         "models.UpdateProductModul": {
             "type": "object",
             "required": [
-                "category_id",
                 "description",
-                "price",
-                "product_name"
+                "price"
             ],
             "properties": {
-                "category_id": {
-                    "type": "string"
-                },
                 "description": {
                     "type": "string"
                 },
@@ -1986,9 +1961,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "price": {
-                    "type": "string"
-                },
-                "product_name": {
                     "type": "string"
                 }
             }

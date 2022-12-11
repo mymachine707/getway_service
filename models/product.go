@@ -23,9 +23,7 @@ type CreateProductModul struct {
 
 // UpdateProductModul ...
 type UpdateProductModul struct {
-	ID           string `json:"id"`
-	Category_id  string `json:"category_id" binding:"required"`
-	Product_name string `json:"product_name" binding:"required"`
-	Description  string `json:"description" binding:"required"`
-	Price        string `json:"price" binding:"required"`
+	ID          string `json:"id"`
+	Description string `json:"description" binding:"required"`
+	Price       string `json:"price" binding:"required"`
 }

@@ -160,12 +160,8 @@ func (h *handler) ClientUpdate(c *gin.Context) {
 
 	client, err := h.grpcClient.Client.UpdateClient(c.Request.Context(), &eCommerce.UpdateClientRequest{
 		Id:          body.Id,
-		Firstname:   body.Firstname,
-		Lastname:    body.Lastname,
-		Username:    body.Username,
 		PhoneNumber: body.PhoneNumber,
 		Address:     body.Address,
-		Type:        body.Type,
 		Password:    body.Password,
 	})
 	if err != nil {

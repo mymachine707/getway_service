@@ -271,13 +271,7 @@ definitions:
       address:
         example: wall street
         type: string
-      firstname:
-        example: John
-        type: string
       id:
-        type: string
-      lastname:
-        example: Doe
         type: string
       password:
         example: client
@@ -285,20 +279,10 @@ definitions:
       phoneNumber:
         example: "998797456321"
         type: string
-      type:
-        example: client
-        type: string
-      username:
-        example: Jdoe002
-        type: string
     required:
     - address
-    - firstname
-    - lastname
     - password
     - phoneNumber
-    - type
-    - username
     type: object
   models.UpdateOrderModul:
     properties:
@@ -313,21 +297,15 @@ definitions:
     type: object
   models.UpdateProductModul:
     properties:
-      category_id:
-        type: string
       description:
         type: string
       id:
         type: string
       price:
         type: string
-      product_name:
-        type: string
     required:
-    - category_id
     - description
     - price
-    - product_name
     type: object
 info:
   contact: {}
