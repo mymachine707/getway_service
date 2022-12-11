@@ -166,6 +166,16 @@ definitions:
       message:
         type: string
     type: object
+  models.LoginModul:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
   models.Order:
     properties:
       client_id:
@@ -235,6 +245,11 @@ definitions:
     - description
     - price
     - product_name
+    type: object
+  models.TokenResponse:
+    properties:
+      token:
+        type: string
     type: object
   models.UpdateCategoryModul:
     properties:
@@ -669,6 +684,37 @@ paths:
           schema:
             $ref: '#/definitions/models.JSONErrorResponse'
       summary: GetClientByID
+      tags:
+      - client
+  /v1/login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: Login body
+        in: body
+        name: users
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginModul'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.JSONResult'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.TokenResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.JSONErrorResponse'
+      summary: Login
       tags:
       - client
   /v1/my-products/:

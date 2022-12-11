@@ -55,38 +55,37 @@ func main() {
 	v1 := r.Group("v1")
 	{
 		v1.Use(MyCORSMiddleware())
-		// v1.POST("/login", h.Login)
-		// v1.POST("/user", h.CreateUser)
-
-		v1.POST("/product", h.CreatProduct)
-		v1.GET("/product/:id", h.GetProductByID)
-		v1.GET("/product", h.GetProductList)
-		v1.PUT("/product", h.ProductUpdate)
-		v1.DELETE("/product/:id", h.DeleteProduct)
-		v1.GET("/my-product/:id", h.SearchProductByMyUsername)
-
-		v1.POST("/category", h.CreatCategory)
-		v1.GET("/category/:id", h.GetCategoryByID)
-		v1.GET("/category", h.GetCategoryList)
-		v1.PUT("/category", h.CategoryUpdate)
-		v1.DELETE("/category/:id", h.DeleteCategory)
-
-		v1.POST("/order", h.CreatOrder)
-		v1.GET("/order/:id", h.GetOrderByID)
-		v1.GET("/order", h.GetOrderList)
-		v1.PUT("/order", h.OrderUpdate)
-		v1.DELETE("/order/:id", h.DeleteOrder)
-
-		v1.POST("/orderItem", h.CreatOrderItem)
-		v1.GET("/orderItem/:id", h.GetOrderItemByID)
-		v1.GET("/orderItem", h.GetOrderItemList)
-		v1.DELETE("/orderItem/:id", h.DeleteOrderItem)
-
+		v1.POST("/login", h.Login)
 		v1.POST("/client", h.CreatClient)
-		v1.GET("/client/:id", h.GetClientByID)
-		v1.GET("/client", h.GetClientList)
-		v1.PUT("/client", h.ClientUpdate)
-		v1.DELETE("/client/:id", h.DeleteClient)
+		v1.GET("/client/:id", h.AuthMiddleware("*"), h.GetClientByID)
+		v1.GET("/client", h.AuthMiddleware("sudo"), h.GetClientList)
+		v1.PUT("/client", h.AuthMiddleware("*"), h.ClientUpdate)
+		v1.DELETE("/client/:id", h.AuthMiddleware("sudo"), h.DeleteClient)
+
+		v1.POST("/product", h.AuthMiddleware("sudo"), h.CreatProduct)
+		v1.GET("/product/:id", h.AuthMiddleware("sudo"), h.GetProductByID)
+		v1.GET("/product", h.AuthMiddleware("sudo"), h.GetProductList)
+		v1.PUT("/product", h.AuthMiddleware("sudo"), h.ProductUpdate)
+		v1.DELETE("/product/:id", h.AuthMiddleware("sudo"), h.DeleteProduct)
+		v1.GET("/my-product/:id", h.AuthMiddleware("sudo"), h.SearchProductByMyUsername)
+
+		v1.POST("/category", h.AuthMiddleware("sudo"), h.CreatCategory)
+		v1.GET("/category/:id", h.AuthMiddleware("sudo"), h.GetCategoryByID)
+		v1.GET("/category", h.AuthMiddleware("sudo"), h.GetCategoryList)
+		v1.PUT("/category", h.AuthMiddleware("sudo"), h.CategoryUpdate)
+		v1.DELETE("/category/:id", h.AuthMiddleware("sudo"), h.DeleteCategory)
+
+		v1.POST("/order", h.AuthMiddleware("*"), h.CreatOrder)
+		v1.GET("/order/:id", h.AuthMiddleware("*"), h.GetOrderByID)
+		v1.GET("/order", h.AuthMiddleware("*"), h.GetOrderList)
+		v1.PUT("/order", h.AuthMiddleware("*"), h.OrderUpdate)
+		v1.DELETE("/order/:id", h.AuthMiddleware("*"), h.DeleteOrder)
+
+		v1.POST("/orderItem", h.AuthMiddleware("*"), h.CreatOrderItem)
+		v1.GET("/orderItem/:id", h.AuthMiddleware("*"), h.GetOrderItemByID)
+		v1.GET("/orderItem", h.AuthMiddleware("*"), h.GetOrderItemList)
+		v1.DELETE("/orderItem/:id", h.AuthMiddleware("*"), h.DeleteOrderItem)
+
 	}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

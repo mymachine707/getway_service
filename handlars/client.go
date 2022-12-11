@@ -22,7 +22,6 @@ import (
 //	@Failure		400				{object}	models.JSONErrorResponse
 //	@Router			/v1/client [post]
 func (h *handler) CreatClient(c *gin.Context) {
-
 	var body models.CreateClientModul
 
 	if err := c.ShouldBindJSON(&body); err != nil {

@@ -28,6 +28,8 @@ type ClientServiceClient interface {
 	DeleteClient(ctx context.Context, in *DeleteClientRequest, opts ...grpc.CallOption) (*Client, error)
 	GetClientList(ctx context.Context, in *GetClientListRequest, opts ...grpc.CallOption) (*GetClientListResponse, error)
 	GetClientById(ctx context.Context, in *GetClientByIDRequest, opts ...grpc.CallOption) (*Client, error)
+	Login(ctx context.Context, in *LoginAuthRequest, opts ...grpc.CallOption) (*TokenResponse, error)
+	HasAccess(ctx context.Context, in *TokenRequest, opts ...grpc.CallOption) (*HasAccessResponse, error)
 }
 
 type clientServiceClient struct {
@@ -92,6 +94,24 @@ func (c *clientServiceClient) GetClientById(ctx context.Context, in *GetClientBy
 	return out, nil
 }
 
+func (c *clientServiceClient) Login(ctx context.Context, in *LoginAuthRequest, opts ...grpc.CallOption) (*TokenResponse, error) {
+	out := new(TokenResponse)
+	err := c.cc.Invoke(ctx, "/ClientService/Login", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clientServiceClient) HasAccess(ctx context.Context, in *TokenRequest, opts ...grpc.CallOption) (*HasAccessResponse, error) {
+	out := new(HasAccessResponse)
+	err := c.cc.Invoke(ctx, "/ClientService/HasAccess", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ClientServiceServer is the server API for ClientService service.
 // All implementations must embed UnimplementedClientServiceServer
 // for forward compatibility
@@ -102,6 +122,8 @@ type ClientServiceServer interface {
 	DeleteClient(context.Context, *DeleteClientRequest) (*Client, error)
 	GetClientList(context.Context, *GetClientListRequest) (*GetClientListResponse, error)
 	GetClientById(context.Context, *GetClientByIDRequest) (*Client, error)
+	Login(context.Context, *LoginAuthRequest) (*TokenResponse, error)
+	HasAccess(context.Context, *TokenRequest) (*HasAccessResponse, error)
 	mustEmbedUnimplementedClientServiceServer()
 }
 
@@ -126,6 +148,12 @@ func (UnimplementedClientServiceServer) GetClientList(context.Context, *GetClien
 }
 func (UnimplementedClientServiceServer) GetClientById(context.Context, *GetClientByIDRequest) (*Client, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetClientById not implemented")
+}
+func (UnimplementedClientServiceServer) Login(context.Context, *LoginAuthRequest) (*TokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedClientServiceServer) HasAccess(context.Context, *TokenRequest) (*HasAccessResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HasAccess not implemented")
 }
 func (UnimplementedClientServiceServer) mustEmbedUnimplementedClientServiceServer() {}
 
@@ -248,6 +276,42 @@ func _ClientService_GetClientById_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClientService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginAuthRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClientServiceServer).Login(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ClientService/Login",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClientServiceServer).Login(ctx, req.(*LoginAuthRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClientService_HasAccess_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClientServiceServer).HasAccess(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ClientService/HasAccess",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClientServiceServer).HasAccess(ctx, req.(*TokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ClientService_ServiceDesc is the grpc.ServiceDesc for ClientService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -278,6 +342,14 @@ var ClientService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetClientById",
 			Handler:    _ClientService_GetClientById_Handler,
+		},
+		{
+			MethodName: "Login",
+			Handler:    _ClientService_Login_Handler,
+		},
+		{
+			MethodName: "HasAccess",
+			Handler:    _ClientService_HasAccess_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
