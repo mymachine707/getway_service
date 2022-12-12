@@ -22,9 +22,7 @@ import (
 //	@Failure		400				{object}	models.JSONErrorResponse
 //	@Router			/v1/category [post]
 func (h *handler) CreatCategory(c *gin.Context) {
-
 	var body models.CreateCategoryModul
-
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, models.JSONErrorResponse{Error: err.Error()})
 		return

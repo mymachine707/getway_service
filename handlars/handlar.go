@@ -17,3 +17,7 @@ func NewHandler(cfg config.Config, grpcClient *clients.GrpcClients) handler {
 		grpcClient: grpcClient,
 	}
 }
+
+type H struct {
+	handler handler
+}
