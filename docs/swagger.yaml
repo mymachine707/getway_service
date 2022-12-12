@@ -105,22 +105,14 @@ definitions:
     type: object
   models.CreateOrderItemModul:
     properties:
-      client_fullname:
+      orderId:
         example: uuid
-        type: string
-      client_id:
-        example: uuid
-        type: string
-      productName:
-        example: Lavash
         type: string
       totalPrice:
         example: uuid
         type: string
     required:
-    - client_fullname
-    - client_id
-    - productName
+    - orderId
     - totalPrice
     type: object
   models.CreateOrderModul:
@@ -200,18 +192,12 @@ definitions:
     type: object
   models.OrderItem:
     properties:
-      client_fullname:
-        example: John Doe
-        type: string
-      client_id:
-        example: uuid
-        type: string
       created_at:
         type: string
       id:
         type: string
-      productName:
-        example: Lavash
+      orderId:
+        example: uuid
         type: string
       totalPrice:
         example: uuid
@@ -219,9 +205,7 @@ definitions:
       updated_at:
         type: string
     required:
-    - client_fullname
-    - client_id
-    - productName
+    - orderId
     - totalPrice
     type: object
   models.Product:

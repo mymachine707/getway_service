@@ -23,8 +23,9 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OrderItemServiceClient interface {
 	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error)
-	CreateOrderItem(ctx context.Context, in *CreateOrderItemRequest, opts ...grpc.CallOption) (*OrderItem, error)
-	DeleteOrderItem(ctx context.Context, in *DeleteOrderItemRequest, opts ...grpc.CallOption) (*OrderItem, error)
+	CreateOrderItem(ctx context.Context, in *CreateOrderItemRequest, opts ...grpc.CallOption) (*Empty, error)
+	UpdateOrder(ctx context.Context, in *UpdateOrderItemRequest, opts ...grpc.CallOption) (*Empty, error)
+	DeleteOrderItem(ctx context.Context, in *DeleteOrderItemRequest, opts ...grpc.CallOption) (*Empty, error)
 	GetOrderItemList(ctx context.Context, in *GetOrderItemListRequest, opts ...grpc.CallOption) (*GetOrderItemListResponse, error)
 	GetOrderItemById(ctx context.Context, in *GetOrderItemByIDRequest, opts ...grpc.CallOption) (*OrderItem, error)
 }
@@ -46,8 +47,8 @@ func (c *orderItemServiceClient) Ping(ctx context.Context, in *Empty, opts ...gr
 	return out, nil
 }
 
-func (c *orderItemServiceClient) CreateOrderItem(ctx context.Context, in *CreateOrderItemRequest, opts ...grpc.CallOption) (*OrderItem, error) {
-	out := new(OrderItem)
+func (c *orderItemServiceClient) CreateOrderItem(ctx context.Context, in *CreateOrderItemRequest, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
 	err := c.cc.Invoke(ctx, "/OrderItemService/CreateOrderItem", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -55,8 +56,17 @@ func (c *orderItemServiceClient) CreateOrderItem(ctx context.Context, in *Create
 	return out, nil
 }
 
-func (c *orderItemServiceClient) DeleteOrderItem(ctx context.Context, in *DeleteOrderItemRequest, opts ...grpc.CallOption) (*OrderItem, error) {
-	out := new(OrderItem)
+func (c *orderItemServiceClient) UpdateOrder(ctx context.Context, in *UpdateOrderItemRequest, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, "/OrderItemService/UpdateOrder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderItemServiceClient) DeleteOrderItem(ctx context.Context, in *DeleteOrderItemRequest, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
 	err := c.cc.Invoke(ctx, "/OrderItemService/DeleteOrderItem", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -87,8 +97,9 @@ func (c *orderItemServiceClient) GetOrderItemById(ctx context.Context, in *GetOr
 // for forward compatibility
 type OrderItemServiceServer interface {
 	Ping(context.Context, *Empty) (*Pong, error)
-	CreateOrderItem(context.Context, *CreateOrderItemRequest) (*OrderItem, error)
-	DeleteOrderItem(context.Context, *DeleteOrderItemRequest) (*OrderItem, error)
+	CreateOrderItem(context.Context, *CreateOrderItemRequest) (*Empty, error)
+	UpdateOrder(context.Context, *UpdateOrderItemRequest) (*Empty, error)
+	DeleteOrderItem(context.Context, *DeleteOrderItemRequest) (*Empty, error)
 	GetOrderItemList(context.Context, *GetOrderItemListRequest) (*GetOrderItemListResponse, error)
 	GetOrderItemById(context.Context, *GetOrderItemByIDRequest) (*OrderItem, error)
 	mustEmbedUnimplementedOrderItemServiceServer()
@@ -101,10 +112,13 @@ type UnimplementedOrderItemServiceServer struct {
 func (UnimplementedOrderItemServiceServer) Ping(context.Context, *Empty) (*Pong, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
 }
-func (UnimplementedOrderItemServiceServer) CreateOrderItem(context.Context, *CreateOrderItemRequest) (*OrderItem, error) {
+func (UnimplementedOrderItemServiceServer) CreateOrderItem(context.Context, *CreateOrderItemRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateOrderItem not implemented")
 }
-func (UnimplementedOrderItemServiceServer) DeleteOrderItem(context.Context, *DeleteOrderItemRequest) (*OrderItem, error) {
+func (UnimplementedOrderItemServiceServer) UpdateOrder(context.Context, *UpdateOrderItemRequest) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateOrder not implemented")
+}
+func (UnimplementedOrderItemServiceServer) DeleteOrderItem(context.Context, *DeleteOrderItemRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrderItem not implemented")
 }
 func (UnimplementedOrderItemServiceServer) GetOrderItemList(context.Context, *GetOrderItemListRequest) (*GetOrderItemListResponse, error) {
@@ -158,6 +172,24 @@ func _OrderItemService_CreateOrderItem_Handler(srv interface{}, ctx context.Cont
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OrderItemServiceServer).CreateOrderItem(ctx, req.(*CreateOrderItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrderItemService_UpdateOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateOrderItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderItemServiceServer).UpdateOrder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/OrderItemService/UpdateOrder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderItemServiceServer).UpdateOrder(ctx, req.(*UpdateOrderItemRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -230,6 +262,10 @@ var OrderItemService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateOrderItem",
 			Handler:    _OrderItemService_CreateOrderItem_Handler,
+		},
+		{
+			MethodName: "UpdateOrder",
+			Handler:    _OrderItemService_UpdateOrder_Handler,
 		},
 		{
 			MethodName: "DeleteOrderItem",

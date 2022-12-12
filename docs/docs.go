@@ -1677,23 +1677,13 @@ const docTemplate = `{
         "models.CreateOrderItemModul": {
             "type": "object",
             "required": [
-                "client_fullname",
-                "client_id",
-                "productName",
+                "orderId",
                 "totalPrice"
             ],
             "properties": {
-                "client_fullname": {
+                "orderId": {
                     "type": "string",
                     "example": "uuid"
-                },
-                "client_id": {
-                    "type": "string",
-                    "example": "uuid"
-                },
-                "productName": {
-                    "type": "string",
-                    "example": "Lavash"
                 },
                 "totalPrice": {
                     "type": "string",
@@ -1812,29 +1802,19 @@ const docTemplate = `{
         "models.OrderItem": {
             "type": "object",
             "required": [
-                "client_fullname",
-                "client_id",
-                "productName",
+                "orderId",
                 "totalPrice"
             ],
             "properties": {
-                "client_fullname": {
-                    "type": "string",
-                    "example": "John Doe"
-                },
-                "client_id": {
-                    "type": "string",
-                    "example": "uuid"
-                },
                 "created_at": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
-                "productName": {
+                "orderId": {
                     "type": "string",
-                    "example": "Lavash"
+                    "example": "uuid"
                 },
                 "totalPrice": {
                     "type": "string",
