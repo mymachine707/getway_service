@@ -1575,8 +1575,8 @@ const docTemplate = `{
                     "example": "uuid"
                 },
                 "count": {
-                    "type": "string",
-                    "example": "2"
+                    "type": "integer",
+                    "example": 2
                 },
                 "product_id": {
                     "type": "string",
@@ -1600,7 +1600,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "price": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "product_name": {
                     "type": "string"
@@ -1652,8 +1652,8 @@ const docTemplate = `{
                     "example": "uuid"
                 },
                 "count": {
-                    "type": "string",
-                    "example": "2"
+                    "type": "integer",
+                    "example": 2
                 },
                 "created_at": {
                     "type": "string"
@@ -1673,10 +1673,15 @@ const docTemplate = `{
         "models.OrderItem": {
             "type": "object",
             "required": [
+                "count",
                 "orderId",
                 "totalPrice"
             ],
             "properties": {
+                "count": {
+                    "type": "integer",
+                    "example": 111
+                },
                 "created_at": {
                     "type": "string"
                 },
@@ -1685,11 +1690,11 @@ const docTemplate = `{
                 },
                 "orderId": {
                     "type": "string",
-                    "example": "uuid"
+                    "example": "111"
                 },
                 "totalPrice": {
-                    "type": "string",
-                    "example": "uuid"
+                    "type": "integer",
+                    "example": 111
                 },
                 "updated_at": {
                     "type": "string"
@@ -1718,7 +1723,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "price": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "product_name": {
                     "type": "string"
@@ -1790,8 +1795,8 @@ const docTemplate = `{
             ],
             "properties": {
                 "count": {
-                    "type": "string",
-                    "example": "2"
+                    "type": "integer",
+                    "example": 2
                 },
                 "id": {
                     "type": "string"
@@ -1812,7 +1817,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "price": {
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         }

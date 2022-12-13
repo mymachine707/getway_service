@@ -109,8 +109,8 @@ definitions:
         example: uuid
         type: string
       count:
-        example: "2"
-        type: string
+        example: 2
+        type: integer
       product_id:
         example: uuid
         type: string
@@ -126,7 +126,7 @@ definitions:
       description:
         type: string
       price:
-        type: string
+        type: integer
       product_name:
         type: string
     required:
@@ -162,8 +162,8 @@ definitions:
         example: uuid
         type: string
       count:
-        example: "2"
-        type: string
+        example: 2
+        type: integer
       created_at:
         type: string
       id:
@@ -180,19 +180,23 @@ definitions:
     type: object
   models.OrderItem:
     properties:
+      count:
+        example: 111
+        type: integer
       created_at:
         type: string
       id:
         type: string
       orderId:
-        example: uuid
+        example: "111"
         type: string
       totalPrice:
-        example: uuid
-        type: string
+        example: 111
+        type: integer
       updated_at:
         type: string
     required:
+    - count
     - orderId
     - totalPrice
     type: object
@@ -207,7 +211,7 @@ definitions:
       id:
         type: string
       price:
-        type: string
+        type: integer
       product_name:
         type: string
       updated_at:
@@ -259,8 +263,8 @@ definitions:
   models.UpdateOrderModul:
     properties:
       count:
-        example: "2"
-        type: string
+        example: 2
+        type: integer
       id:
         type: string
     required:
@@ -274,7 +278,7 @@ definitions:
       id:
         type: string
       price:
-        type: string
+        type: integer
     required:
     - description
     - price
