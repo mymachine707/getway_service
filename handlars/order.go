@@ -69,30 +69,12 @@ func (h *handler) CreatOrder(c *gin.Context) {
 		return
 	}
 
-	// Todo calculate total price
-	price, err := strconv.Atoi(product.Price)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, models.JSONErrorResponse{
-			Error: err.Error(),
-		})
-		return
-	}
-	count, err := strconv.Atoi(body.Count)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, models.JSONErrorResponse{
-			Error: err.Error(),
-		})
-		return
-	}
-	totalPriceProduct := price * count
-	total := strconv.Itoa(totalPriceProduct)
-	// finish
-
-	// Orderni OrderItemga kirgazish
+	totalPriceProduct := product.Price * body.Count
 
 	_, err = h.grpcClient.OrderItem.CreateOrderItem(c.Request.Context(), &eCommerce.CreateOrderItemRequest{
 		OredrId:    order.Id,
-		TotalPrice: total,
+		TotalPrice: totalPriceProduct,
+		Count:      order.Count,
 	})
 
 	if err != nil {
@@ -135,39 +117,10 @@ func (h *handler) GetOrderByID(c *gin.Context) {
 		})
 		return
 	}
-	// get order with product info
-
-	product, err := h.grpcClient.Product.GetProductById(c.Request.Context(), &eCommerce.GetProductByIDRequest{
-		Id: order.ProductId,
-	})
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
-			Error: err.Error(),
-		})
-		return
-	}
-
-	//---------------------------------
 
 	c.JSON(http.StatusOK, models.JSONResult{
 		Message: "GetOrderById OK",
-		Data: eCommerce.GetOrderByIDResponse{
-			Id:        order.Id,
-			ProductId: order.ProductId,
-			Product: &eCommerce.Product{
-				Id:          product.Id,
-				CategoryId:  product.Category.Id,
-				ProductName: product.ProductName,
-				Description: product.Description,
-				Price:       product.Price,
-				CreatedAt:   product.CreatedAt,
-				UpdatedAt:   product.UpdatedAt,
-			},
-			ClientId:       order.ClientId,
-			ClientUsername: order.ClientUsername,
-			CreatedAt:      order.CreatedAt,
-			UpdatedAt:      order.UpdatedAt,
-		},
+		Data:    order,
 	})
 }
 

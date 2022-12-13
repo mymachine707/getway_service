@@ -9,45 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// CreatOrderItem godoc
-//
-//	@Summary		Creat OrderItem
-//	@Description	Creat a new orderItem
-//	@Tags			orderItem
-//	@Accept			json
-//	@Produce		json
-//	@Param			orderItem		body		models.CreateOrderItemModul	true	"OrderItem body"
-//	@Param			Authorization	header		string						false	"Authorization"
-//	@Success		201				{object}	models.JSONResult{data=models.OrderItem}
-//	@Failure		400				{object}	models.JSONErrorResponse
-//	@Router			/v1/orderItem [post]
-func (h *handler) CreatOrderItem(c *gin.Context) {
-
-	var body models.CreateOrderItemModul
-
-	if err := c.ShouldBindJSON(&body); err != nil {
-		c.JSON(http.StatusBadRequest, models.JSONErrorResponse{Error: err.Error()})
-		return
-	}
-
-	orderItem, err := h.grpcClient.OrderItem.CreateOrderItem(c.Request.Context(), &eCommerce.CreateOrderItemRequest{
-		OredrId:    body.OrderId,
-		TotalPrice: body.TotalPrice,
-	})
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
-			Error: err.Error(),
-		})
-		return
-	}
-
-	c.JSON(http.StatusCreated, models.JSONResult{
-		Message: "CreatOrderItem",
-		Data:    orderItem,
-	})
-}
-
 // GetOrderItemByID godoc
 //
 //	@Summary		GetOrderItemByID
@@ -131,36 +92,4 @@ func (h *handler) GetOrderItemList(c *gin.Context) {
 		Message: "GetOrderItemList OK",
 		Data:    orderItemList,
 	})
-}
-
-// DeleteOrderItem godoc
-//
-//	@Summary		Delete OrderItem
-//	@Description	get element by id and delete this orderItem
-//	@Tags			orderItem
-//	@Accept			json
-//	@Produce		json
-//	@Param			id				path		string	true	"OrderItem id"
-//	@Param			Authorization	header		string	false	"Authorization"
-//	@Success		201				{object}	models.JSONResult{data=models.OrderItem}
-//	@Failure		400				{object}	models.JSONErrorResponse
-//	@Router			/v1/orderItem/{id} [delete]
-func (h *handler) DeleteOrderItem(c *gin.Context) {
-	idStr := c.Param("id")
-
-	orderItem, err := h.grpcClient.OrderItem.DeleteOrderItem(c.Request.Context(), &eCommerce.DeleteOrderItemRequest{
-		Id: idStr,
-	})
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
-			Error: err.Error(),
-		})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"message": "OrderItem Deleted",
-		"data":    orderItem,
-	})
-
 }

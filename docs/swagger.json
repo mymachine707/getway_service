@@ -994,64 +994,6 @@
                 }
             }
         },
-        "/v1/orderItem": {
-            "post": {
-                "description": "Creat a new orderItem",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "orderItem"
-                ],
-                "summary": "Creat OrderItem",
-                "parameters": [
-                    {
-                        "description": "OrderItem body",
-                        "name": "orderItem",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.CreateOrderItemModul"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/models.JSONResult"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/models.OrderItem"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.JSONErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/v1/orderItem/": {
             "get": {
                 "description": "GetOrderItemList",
@@ -1129,60 +1071,6 @@
                     "orderItem"
                 ],
                 "summary": "GetOrderItemByID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "OrderItem id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/models.JSONResult"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/models.OrderItem"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.JSONErrorResponse"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "get element by id and delete this orderItem",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "orderItem"
-                ],
-                "summary": "Delete OrderItem",
                 "parameters": [
                     {
                         "type": "string",
@@ -1659,23 +1547,6 @@
                 "username": {
                     "type": "string",
                     "example": "Jdoe002"
-                }
-            }
-        },
-        "models.CreateOrderItemModul": {
-            "type": "object",
-            "required": [
-                "orderId",
-                "totalPrice"
-            ],
-            "properties": {
-                "orderId": {
-                    "type": "string",
-                    "example": "uuid"
-                },
-                "totalPrice": {
-                    "type": "string",
-                    "example": "uuid"
                 }
             }
         },

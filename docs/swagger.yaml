@@ -103,18 +103,6 @@ definitions:
     - type
     - username
     type: object
-  models.CreateOrderItemModul:
-    properties:
-      orderId:
-        example: uuid
-        type: string
-      totalPrice:
-        example: uuid
-        type: string
-    required:
-    - orderId
-    - totalPrice
-    type: object
   models.CreateOrderModul:
     properties:
       client_id:
@@ -896,41 +884,6 @@ paths:
       summary: GetOrderByID
       tags:
       - order
-  /v1/orderItem:
-    post:
-      consumes:
-      - application/json
-      description: Creat a new orderItem
-      parameters:
-      - description: OrderItem body
-        in: body
-        name: orderItem
-        required: true
-        schema:
-          $ref: '#/definitions/models.CreateOrderItemModul'
-      - description: Authorization
-        in: header
-        name: Authorization
-        type: string
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            allOf:
-            - $ref: '#/definitions/models.JSONResult'
-            - properties:
-                data:
-                  $ref: '#/definitions/models.OrderItem'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.JSONErrorResponse'
-      summary: Creat OrderItem
-      tags:
-      - orderItem
   /v1/orderItem/:
     get:
       consumes:
@@ -971,39 +924,6 @@ paths:
       tags:
       - orderItem
   /v1/orderItem/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: get element by id and delete this orderItem
-      parameters:
-      - description: OrderItem id
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Authorization
-        in: header
-        name: Authorization
-        type: string
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            allOf:
-            - $ref: '#/definitions/models.JSONResult'
-            - properties:
-                data:
-                  $ref: '#/definitions/models.OrderItem'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.JSONErrorResponse'
-      summary: Delete OrderItem
-      tags:
-      - orderItem
     get:
       consumes:
       - application/json
