@@ -105,15 +105,14 @@ definitions:
     type: object
   models.CreateOrderModul:
     properties:
-      client_id:
-        example: "111"
-        type: string
       orderItems:
+        description: Client_id  string       `json:"client_id" binding:"required"
+          example:"111"`
         items:
           $ref: '#/definitions/models.OrderItem'
         type: array
     required:
-    - client_id
+    - orderItems
     type: object
   models.CreateProductModul:
     properties:

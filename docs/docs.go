@@ -1332,14 +1332,11 @@ const docTemplate = `{
         "models.CreateOrderModul": {
             "type": "object",
             "required": [
-                "client_id"
+                "orderItems"
             ],
             "properties": {
-                "client_id": {
-                    "type": "string",
-                    "example": "111"
-                },
                 "orderItems": {
+                    "description": "Client_id  string       ` + "`" + `json:\"client_id\" binding:\"required\" example:\"111\"` + "`" + `",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.OrderItem"

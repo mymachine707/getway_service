@@ -14,7 +14,7 @@ type Order struct {
 
 // CreateOrderModul ..
 type CreateOrderModul struct {
-	Client_id  string       `json:"client_id" binding:"required" example:"111"`
+	// Client_id  string       `json:"client_id" binding:"required" example:"111"`
 	OrderItems []*OrderItem `json:"orderItems" binding:"required"`
 }
 

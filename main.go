@@ -67,7 +67,6 @@ func main() {
 		v1.GET("/product", h.AuthMiddleware("*"), h.GetProductList)
 		v1.PUT("/product", h.AuthMiddleware("sudo"), h.ProductUpdate)
 		v1.DELETE("/product/:id", h.AuthMiddleware("sudo"), h.DeleteProduct)
-		v1.GET("/my-product/:id", h.AuthMiddleware("sudo"), h.SearchProductByMyUsername)
 
 		v1.POST("/category", h.AuthMiddleware("sudo"), h.CreatCategory)
 		v1.GET("/category/:id", h.AuthMiddleware("sudo"), h.GetCategoryByID)
@@ -77,7 +76,8 @@ func main() {
 
 		v1.POST("/order", h.AuthMiddleware("*"), h.CreatOrder)
 		v1.GET("/order/:id", h.AuthMiddleware("*"), h.GetOrderByID)
-		v1.GET("/order", h.AuthMiddleware("*"), h.GetOrderList)
+		v1.GET("/order", h.AuthMiddleware("sudo"), h.GetOrderList)
+		v1.GET("/order", h.AuthMiddleware("*"), h.GetMyListOrders)
 
 	}
 
