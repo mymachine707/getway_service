@@ -29,52 +29,33 @@ func (h *handler) CreatOrder(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, models.JSONErrorResponse{Error: err.Error()})
 		return
 	}
-
-	// Product bizda bor yo'ligini tekshiramiz!!!
-	product, err := h.grpcClient.Product.GetProductById(c.Request.Context(), &eCommerce.GetProductByIDRequest{
-		Id: body.Product_id,
-	})
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
-			Error: "We do not have this product!",
-		})
-		return
-	}
-	// Tekshiruvdan o'tsa keyingi bosqichga boradi. O'tmasa chiqib ketadi.
-
 	// Client bizda bor yo'ligini tekshiramiz!!!
 	client, err := h.grpcClient.Client.GetClientById(c.Request.Context(), &eCommerce.GetClientByIDRequest{
 		Id: body.Client_id,
 	})
-
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
 			Error: "You are not registered! Please register!",
 		})
 		return
 	}
+
 	// Tekshiruvdan o'tsa keyingi bosqichga boradi. O'tmasa chiqib ketadi.
 
-	order, err := h.grpcClient.Order.CreateOrder(c.Request.Context(), &eCommerce.CreateOrderRequest{
-		ProductId: product.Id,
-		ClientId:  client.Id,
-		Count:     body.Count,
-	})
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.JSONErrorResponse{
-			Error: err.Error(),
-		})
-		return
+	oItem := []*eCommerce.OrderItem{
+		&eCommerce.OrderItem{},
 	}
 
-	totalPriceProduct := product.Price * body.Count
+	for _, v := range body.OrderItems {
+		oItem = append(oItem, &eCommerce.OrderItem{
+			ProductId: v.Product_id,
+			Quantity:  v.Quantity,
+		})
+	}
 
-	_, err = h.grpcClient.OrderItem.CreateOrderItem(c.Request.Context(), &eCommerce.CreateOrderItemRequest{
-		OredrId:    order.Id,
-		TotalPrice: totalPriceProduct,
-		Count:      order.Count,
+	order, err := h.grpcClient.Order.CreateOrder(c.Request.Context(), &eCommerce.CreateOrderRequest{
+		ClientId:   client.Id,
+		Orderitems: oItem,
 	})
 
 	if err != nil {
@@ -107,7 +88,7 @@ func (h *handler) GetOrderByID(c *gin.Context) {
 
 	idStr := c.Param("id")
 
-	order, err := h.grpcClient.Order.GetOrderById(c.Request.Context(), &eCommerce.GetOrderByIDRequest{
+	order, err := h.grpcClient.Order.GetOrderById(c.Request.Context(), &eCommerce.GetOrderByIdRequest{
 		Id: idStr,
 	})
 
