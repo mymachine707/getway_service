@@ -78,12 +78,6 @@ func main() {
 		v1.POST("/order", h.CreatOrder)
 		v1.GET("/order/:id", h.GetOrderByID)
 		v1.GET("/order", h.GetOrderList)
-		v1.PUT("/order", h.OrderUpdate)
-		v1.DELETE("/order/:id", h.DeleteOrder)
-
-		v1.GET("/orderItem/:id", h.GetOrderItemByID)
-		v1.GET("/orderItem", h.GetOrderItemList)
-
 	}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

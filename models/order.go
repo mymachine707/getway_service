@@ -18,9 +18,3 @@ type CreateOrderModul struct {
 	Client_id  string `json:"client_id" binding:"required" example:"uuid"`
 	Count      int32  `json:"count" binding:"required" example:"2"`
 }
-
-// UpdateOrderModul ..
-type UpdateOrderModul struct {
-	ID    string `json:"id" binding:"required"`
-	Count int32  `json:"count" binding:"required" example:"2"`
-}
