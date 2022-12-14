@@ -106,18 +106,14 @@ definitions:
   models.CreateOrderModul:
     properties:
       client_id:
-        example: uuid
+        example: "111"
         type: string
-      count:
-        example: 2
-        type: integer
-      product_id:
-        example: uuid
-        type: string
+      orderItems:
+        items:
+          $ref: '#/definitions/models.OrderItem'
+        type: array
     required:
     - client_id
-    - count
-    - product_id
     type: object
   models.CreateProductModul:
     properties:
@@ -159,7 +155,7 @@ definitions:
   models.Order:
     properties:
       client_id:
-        example: uuid
+        example: "111"
         type: string
       count:
         example: 2
@@ -169,7 +165,7 @@ definitions:
       id:
         type: string
       product_id:
-        example: uuid
+        example: "111"
         type: string
       updated_at:
         type: string
@@ -180,25 +176,15 @@ definitions:
     type: object
   models.OrderItem:
     properties:
-      count:
-        example: 111
-        type: integer
-      created_at:
-        type: string
-      id:
-        type: string
-      orderId:
+      product_id:
         example: "111"
         type: string
-      totalPrice:
+      quantity:
         example: 111
         type: integer
-      updated_at:
-        type: string
     required:
-    - count
-    - orderId
-    - totalPrice
+    - product_id
+    - quantity
     type: object
   models.Product:
     properties:
@@ -259,17 +245,6 @@ definitions:
     - address
     - password
     - phoneNumber
-    type: object
-  models.UpdateOrderModul:
-    properties:
-      count:
-        example: 2
-        type: integer
-      id:
-        type: string
-    required:
-    - count
-    - id
     type: object
   models.UpdateProductModul:
     properties:
@@ -785,76 +760,7 @@ paths:
       summary: List orders
       tags:
       - order
-    put:
-      consumes:
-      - application/json
-      description: Update Order
-      parameters:
-      - description: Order body
-        in: body
-        name: order
-        required: true
-        schema:
-          $ref: '#/definitions/models.UpdateOrderModul'
-      - description: Authorization
-        in: header
-        name: Authorization
-        type: string
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            allOf:
-            - $ref: '#/definitions/models.JSONResult'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/models.Order'
-                  type: array
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.JSONErrorResponse'
-      summary: Update Order
-      tags:
-      - order
   /v1/order/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: get element by id and delete this order
-      parameters:
-      - description: Order id
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Authorization
-        in: header
-        name: Authorization
-        type: string
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            allOf:
-            - $ref: '#/definitions/models.JSONResult'
-            - properties:
-                data:
-                  $ref: '#/definitions/models.Order'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.JSONErrorResponse'
-      summary: Delete Order
-      tags:
-      - order
     get:
       consumes:
       - application/json
@@ -888,79 +794,6 @@ paths:
       summary: GetOrderByID
       tags:
       - order
-  /v1/orderItem/:
-    get:
-      consumes:
-      - application/json
-      description: GetOrderItemList
-      parameters:
-      - description: "0"
-        in: query
-        name: offset
-        type: integer
-      - description: "100"
-        in: query
-        name: limit
-        type: integer
-      - description: search exapmle
-        in: query
-        name: search
-        type: string
-      - description: Authorization
-        in: header
-        name: Authorization
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/models.JSONResult'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/models.OrderItem'
-                  type: array
-              type: object
-      summary: List orderItems
-      tags:
-      - orderItem
-  /v1/orderItem/{id}:
-    get:
-      consumes:
-      - application/json
-      description: get an orderItem by id
-      parameters:
-      - description: OrderItem id
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Authorization
-        in: header
-        name: Authorization
-        type: string
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            allOf:
-            - $ref: '#/definitions/models.JSONResult'
-            - properties:
-                data:
-                  $ref: '#/definitions/models.OrderItem'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.JSONErrorResponse'
-      summary: GetOrderItemByID
-      tags:
-      - orderItem
   /v1/product:
     post:
       consumes:

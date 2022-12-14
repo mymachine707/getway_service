@@ -835,65 +835,6 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
-            "put": {
-                "description": "Update Order",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "order"
-                ],
-                "summary": "Update Order",
-                "parameters": [
-                    {
-                        "description": "Order body",
-                        "name": "order",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.UpdateOrderModul"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/models.JSONResult"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/models.Order"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.JSONErrorResponse"
-                        }
-                    }
-                }
             }
         },
         "/v1/order/{id}": {
@@ -937,180 +878,6 @@ const docTemplate = `{
                                     "properties": {
                                         "data": {
                                             "$ref": "#/definitions/models.Order"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.JSONErrorResponse"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "get element by id and delete this order",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "order"
-                ],
-                "summary": "Delete Order",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Order id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/models.JSONResult"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/models.Order"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.JSONErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/orderItem/": {
-            "get": {
-                "description": "GetOrderItemList",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "orderItem"
-                ],
-                "summary": "List orderItems",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "0",
-                        "name": "offset",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "100",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "search exapmle",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/models.JSONResult"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/models.OrderItem"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/orderItem/{id}": {
-            "get": {
-                "description": "get an orderItem by id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "orderItem"
-                ],
-                "summary": "GetOrderItemByID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "OrderItem id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/models.JSONResult"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/models.OrderItem"
                                         }
                                     }
                                 }
@@ -1565,22 +1332,18 @@ const docTemplate = `{
         "models.CreateOrderModul": {
             "type": "object",
             "required": [
-                "client_id",
-                "count",
-                "product_id"
+                "client_id"
             ],
             "properties": {
                 "client_id": {
                     "type": "string",
-                    "example": "uuid"
+                    "example": "111"
                 },
-                "count": {
-                    "type": "integer",
-                    "example": 2
-                },
-                "product_id": {
-                    "type": "string",
-                    "example": "uuid"
+                "orderItems": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.OrderItem"
+                    }
                 }
             }
         },
@@ -1649,7 +1412,7 @@ const docTemplate = `{
             "properties": {
                 "client_id": {
                     "type": "string",
-                    "example": "uuid"
+                    "example": "111"
                 },
                 "count": {
                     "type": "integer",
@@ -1663,7 +1426,7 @@ const docTemplate = `{
                 },
                 "product_id": {
                     "type": "string",
-                    "example": "uuid"
+                    "example": "111"
                 },
                 "updated_at": {
                     "type": "string"
@@ -1673,31 +1436,17 @@ const docTemplate = `{
         "models.OrderItem": {
             "type": "object",
             "required": [
-                "count",
-                "orderId",
-                "totalPrice"
+                "product_id",
+                "quantity"
             ],
             "properties": {
-                "count": {
-                    "type": "integer",
-                    "example": 111
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "orderId": {
+                "product_id": {
                     "type": "string",
                     "example": "111"
                 },
-                "totalPrice": {
+                "quantity": {
                     "type": "integer",
                     "example": 111
-                },
-                "updated_at": {
-                    "type": "string"
                 }
             }
         },
@@ -1784,22 +1533,6 @@ const docTemplate = `{
                 "phoneNumber": {
                     "type": "string",
                     "example": "998797456321"
-                }
-            }
-        },
-        "models.UpdateOrderModul": {
-            "type": "object",
-            "required": [
-                "count",
-                "id"
-            ],
-            "properties": {
-                "count": {
-                    "type": "integer",
-                    "example": 2
-                },
-                "id": {
-                    "type": "string"
                 }
             }
         },

@@ -30,7 +30,7 @@ func (h *handler) CreatOrder(c *gin.Context) {
 		return
 	}
 	// Client bizda bor yo'ligini tekshiramiz!!!
-	client, err := h.grpcClient.Client.GetClientById(c.Request.Context(), &eCommerce.GetClientByIDRequest{
+	_, err := h.grpcClient.Client.GetClientById(c.Request.Context(), &eCommerce.GetClientByIDRequest{
 		Id: body.Client_id,
 	})
 	if err != nil {
@@ -42,9 +42,7 @@ func (h *handler) CreatOrder(c *gin.Context) {
 
 	// Tekshiruvdan o'tsa keyingi bosqichga boradi. O'tmasa chiqib ketadi.
 
-	oItem := []*eCommerce.OrderItem{
-		&eCommerce.OrderItem{},
-	}
+	oItem := make([]*eCommerce.OrderItem, 0)
 
 	for _, v := range body.OrderItems {
 		oItem = append(oItem, &eCommerce.OrderItem{
@@ -54,7 +52,7 @@ func (h *handler) CreatOrder(c *gin.Context) {
 	}
 
 	order, err := h.grpcClient.Order.CreateOrder(c.Request.Context(), &eCommerce.CreateOrderRequest{
-		ClientId:   client.Id,
+		ClientId:   body.Client_id,
 		Orderitems: oItem,
 	})
 
