@@ -645,46 +645,6 @@ paths:
       summary: Login
       tags:
       - client
-  /v1/my-products/:
-    get:
-      consumes:
-      - application/json
-      description: SearchProductByMyUsername
-      parameters:
-      - description: "0"
-        in: query
-        name: offset
-        type: integer
-      - description: "100"
-        in: query
-        name: limit
-        type: integer
-      - default: ""
-        description: s
-        in: query
-        name: search
-        type: string
-      - description: Authorization
-        in: header
-        name: Authorization
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/models.JSONResult'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/models.Product'
-                  type: array
-              type: object
-      summary: List products
-      tags:
-      - product
   /v1/order:
     post:
       consumes:
@@ -724,7 +684,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: GetOrderList
+      description: Get My List Orders
       parameters:
       - description: "0"
         in: query
@@ -756,7 +716,7 @@ paths:
                     $ref: '#/definitions/models.Order'
                   type: array
               type: object
-      summary: List orders
+      summary: Get My List Orders
       tags:
       - order
   /v1/order/{id}:

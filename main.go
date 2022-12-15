@@ -77,8 +77,6 @@ func main() {
 		v1.POST("/order", h.AuthMiddleware("*"), h.CreatOrder)
 		v1.GET("/order/:id", h.AuthMiddleware("*"), h.GetOrderByID)
 		v1.GET("/order", h.AuthMiddleware("sudo"), h.GetOrderList)
-		v1.GET("/order", h.AuthMiddleware("*"), h.GetMyListOrders)
-
 	}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

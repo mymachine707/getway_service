@@ -650,71 +650,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/my-products/": {
-            "get": {
-                "description": "SearchProductByMyUsername",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "product"
-                ],
-                "summary": "List products",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "0",
-                        "name": "offset",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "100",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "default": "",
-                        "description": "s",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/models.JSONResult"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/models.Product"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
         "/v1/order": {
             "post": {
                 "description": "Creat a new order",
@@ -775,7 +710,7 @@ const docTemplate = `{
         },
         "/v1/order/": {
             "get": {
-                "description": "GetOrderList",
+                "description": "Get My List Orders",
                 "consumes": [
                     "application/json"
                 ],
@@ -785,7 +720,7 @@ const docTemplate = `{
                 "tags": [
                     "order"
                 ],
-                "summary": "List orders",
+                "summary": "Get My List Orders",
                 "parameters": [
                     {
                         "type": "integer",
